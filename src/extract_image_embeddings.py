@@ -1,0 +1,448 @@
+from __future__ import annotations
+
+import argparse
+import ast
+import json
+import logging
+import sys
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+import torch
+from PIL import Image
+from torch import nn
+from torchvision import transforms
+from torchvision.models import EfficientNet_B0_Weights, efficientnet_b0
+from tqdm import tqdm
+
+
+LOGGER = logging.getLogger("image_embedding_extraction")
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+DEFAULT_INPUT_PATH = ROOT_DIR / "dataset" / "train_ready_multimodal.parquet"
+DEFAULT_OUTPUT_PATH = ROOT_DIR / "dataset" / "image_embeddings.parquet"
+DEFAULT_REPORT_PATH = ROOT_DIR / "reports" / "image_embedding_report.md"
+
+LISTING_ID_COLUMN = "listing_id"
+IMAGE_PATHS_COLUMN = "valid_image_paths"
+IMAGE_COUNT_COLUMN = "valid_image_count"
+MAX_IMAGES_PER_LISTING = 6
+DEFAULT_BATCH_SIZE = 64
+
+
+@dataclass
+class ExtractionStats:
+    total_listings: int = 0
+    extracted_listings: int = 0
+    skipped_listings: int = 0
+    broken_image_count: int = 0
+    total_used_images: int = 0
+    embedding_dimension: int = 0
+    device_name: str = "cpu"
+
+
+class EfficientNetB0Embedder(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        backbone = efficientnet_b0(weights=EfficientNet_B0_Weights.DEFAULT)
+        self.features = backbone.features
+        self.avgpool = backbone.avgpool
+
+    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
+        features = self.features(inputs)
+        pooled = self.avgpool(features)
+        return torch.flatten(pooled, start_dim=1)
+
+
+def configure_logging() -> None:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+    )
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Extract EfficientNet-B0 image embeddings per listing.")
+    parser.add_argument("--input", type=Path, default=DEFAULT_INPUT_PATH, help="Input multimodal parquet path.")
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT_PATH, help="Output embeddings parquet path.")
+    parser.add_argument("--report", type=Path, default=DEFAULT_REPORT_PATH, help="Output markdown report path.")
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=DEFAULT_BATCH_SIZE,
+        help="Batch size for EfficientNet inference.",
+    )
+    parser.add_argument(
+        "--max-images-per-listing",
+        type=int,
+        default=MAX_IMAGES_PER_LISTING,
+        help="Maximum readable images to use per listing.",
+    )
+    parser.add_argument(
+        "--limit-listings",
+        type=int,
+        default=None,
+        help="Optional cap for smoke tests; when omitted all listings are processed.",
+    )
+    return parser.parse_args()
+
+
+def ensure_output_directories(output_path: Path, report_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+
+
+def load_dataset(input_path: Path, limit_listings: int | None = None) -> pd.DataFrame:
+    if not input_path.exists():
+        raise FileNotFoundError(f"Input parquet bulunamadi: {input_path}")
+
+    LOGGER.info("Multimodal dataset okunuyor: %s", input_path)
+    dataframe = pd.read_parquet(input_path)
+
+    required_columns = {LISTING_ID_COLUMN, IMAGE_PATHS_COLUMN, IMAGE_COUNT_COLUMN}
+    missing_columns = sorted(required_columns - set(dataframe.columns))
+    if missing_columns:
+        raise ValueError(f"Dataset icinde eksik kolonlar bulundu: {missing_columns}")
+
+    if limit_listings is not None:
+        dataframe = dataframe.head(limit_listings).copy()
+
+    LOGGER.info("Islenecek listing sayisi: %s", len(dataframe))
+    return dataframe.reset_index(drop=True)
+
+
+def select_device() -> torch.device:
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    return torch.device("cpu")
+
+
+def build_image_transform() -> transforms.Compose:
+    imagenet_mean = [0.485, 0.456, 0.406]
+    imagenet_std = [0.229, 0.224, 0.225]
+    return transforms.Compose(
+        [
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=imagenet_mean, std=imagenet_std),
+        ]
+    )
+
+
+def parse_image_path_list(value: Any) -> list[str]:
+    if isinstance(value, list):
+        return [str(item) for item in value]
+
+    if isinstance(value, tuple):
+        return [str(item) for item in value]
+
+    if value is None or pd.isna(value):
+        return []
+
+    text = str(value).strip()
+    if not text:
+        return []
+
+    for parser in (json.loads, ast.literal_eval):
+        try:
+            parsed = parser(text)
+            if isinstance(parsed, (list, tuple)):
+                return [str(item) for item in parsed]
+        except Exception:
+            continue
+
+    return [text]
+
+
+def resolve_image_path(raw_path: str, project_root: Path) -> Path | None:
+    if not raw_path:
+        return None
+
+    path_obj = Path(raw_path)
+    candidate_paths = []
+
+    if path_obj.is_absolute():
+        candidate_paths.append(path_obj)
+    else:
+        candidate_paths.append(path_obj)
+        candidate_paths.append(project_root / path_obj)
+
+        raw_text = raw_path.replace("\\", "/").strip("/")
+        candidate_paths.append(project_root / raw_text)
+        if raw_text.startswith("dataset/"):
+            candidate_paths.append(project_root / raw_text)
+        else:
+            candidate_paths.append(project_root / "dataset" / raw_text)
+
+    seen: set[str] = set()
+    for candidate in candidate_paths:
+        candidate_text = str(candidate)
+        if candidate_text in seen:
+            continue
+        seen.add(candidate_text)
+        if candidate.exists() and candidate.is_file():
+            return candidate
+
+    return None
+
+
+def load_image_tensor(image_path: Path, image_transform: transforms.Compose) -> torch.Tensor:
+    with Image.open(image_path) as image:
+        rgb_image = image.convert("RGB")
+        return image_transform(rgb_image)
+
+
+def flush_batch(
+    model: nn.Module,
+    device: torch.device,
+    batch_tensors: list[torch.Tensor],
+    batch_listing_ids: list[str],
+    embedding_sums: dict[str, np.ndarray],
+    embedding_counts: dict[str, int],
+) -> int:
+    if not batch_tensors:
+        return 0
+
+    batch_tensor = torch.stack(batch_tensors, dim=0).to(device, non_blocking=device.type == "cuda")
+
+    with torch.inference_mode():
+        if device.type == "cuda":
+            with torch.autocast(device_type="cuda", dtype=torch.float16):
+                outputs = model(batch_tensor)
+        else:
+            outputs = model(batch_tensor)
+
+    output_array = outputs.detach().float().cpu().numpy()
+
+    for listing_id, embedding in zip(batch_listing_ids, output_array, strict=True):
+        if listing_id not in embedding_sums:
+            embedding_sums[listing_id] = embedding.astype(np.float64, copy=True)
+            embedding_counts[listing_id] = 1
+        else:
+            embedding_sums[listing_id] += embedding
+            embedding_counts[listing_id] += 1
+
+    processed_image_count = len(batch_tensors)
+    batch_tensors.clear()
+    batch_listing_ids.clear()
+    return processed_image_count
+
+
+def extract_embeddings(
+    dataframe: pd.DataFrame,
+    model: nn.Module,
+    device: torch.device,
+    image_transform: transforms.Compose,
+    batch_size: int,
+    max_images_per_listing: int,
+) -> tuple[pd.DataFrame, ExtractionStats]:
+    stats = ExtractionStats(
+        total_listings=int(len(dataframe)),
+        device_name=(
+            f"cuda ({torch.cuda.get_device_name(device)})"
+            if device.type == "cuda"
+            else device.type
+        ),
+    )
+
+    embedding_sums: dict[str, np.ndarray] = {}
+    embedding_counts: dict[str, int] = {}
+    used_image_counts: dict[str, int] = {}
+    batch_tensors: list[torch.Tensor] = []
+    batch_listing_ids: list[str] = []
+
+    progress_bar = tqdm(
+        dataframe.itertuples(index=False),
+        total=len(dataframe),
+        desc="Processing listings",
+        unit="listing",
+    )
+
+    for row in progress_bar:
+        listing_id = str(getattr(row, LISTING_ID_COLUMN))
+        raw_paths = parse_image_path_list(getattr(row, IMAGE_PATHS_COLUMN))
+
+        used_for_listing = 0
+        for raw_path in raw_paths:
+            if used_for_listing >= max_images_per_listing:
+                break
+
+            resolved_path = resolve_image_path(raw_path, ROOT_DIR)
+            if resolved_path is None:
+                stats.broken_image_count += 1
+                continue
+
+            try:
+                image_tensor = load_image_tensor(resolved_path, image_transform)
+            except Exception:
+                stats.broken_image_count += 1
+                continue
+
+            batch_tensors.append(image_tensor)
+            batch_listing_ids.append(listing_id)
+            used_for_listing += 1
+
+            if len(batch_tensors) >= batch_size:
+                flush_batch(
+                    model=model,
+                    device=device,
+                    batch_tensors=batch_tensors,
+                    batch_listing_ids=batch_listing_ids,
+                    embedding_sums=embedding_sums,
+                    embedding_counts=embedding_counts,
+                )
+
+        if used_for_listing > 0:
+            used_image_counts[listing_id] = used_for_listing
+        else:
+            stats.skipped_listings += 1
+
+        progress_bar.set_postfix(
+            extracted=len(used_image_counts),
+            skipped=stats.skipped_listings,
+            broken=stats.broken_image_count,
+        )
+
+    flush_batch(
+        model=model,
+        device=device,
+        batch_tensors=batch_tensors,
+        batch_listing_ids=batch_listing_ids,
+        embedding_sums=embedding_sums,
+        embedding_counts=embedding_counts,
+    )
+    progress_bar.close()
+
+    rows: list[dict[str, Any]] = []
+    for listing_id in dataframe[LISTING_ID_COLUMN].astype(str).tolist():
+        if listing_id not in embedding_sums:
+            continue
+
+        mean_embedding = embedding_sums[listing_id] / max(embedding_counts[listing_id], 1)
+        rows.append(
+            {
+                LISTING_ID_COLUMN: listing_id,
+                "image_embedding": mean_embedding.astype(np.float32).tolist(),
+                "used_image_count": int(used_image_counts[listing_id]),
+            }
+        )
+
+    embedding_df = pd.DataFrame(rows)
+
+    stats.extracted_listings = int(len(embedding_df))
+    stats.total_used_images = int(sum(used_image_counts.values()))
+    stats.embedding_dimension = int(len(embedding_df.iloc[0]["image_embedding"])) if not embedding_df.empty else 0
+    stats.skipped_listings = int(stats.total_listings - stats.extracted_listings)
+
+    return embedding_df, stats
+
+
+def build_report(
+    stats: ExtractionStats,
+    input_path: Path,
+    output_path: Path,
+    batch_size: int,
+    max_images_per_listing: int,
+) -> str:
+    average_used_images = (
+        stats.total_used_images / stats.extracted_listings
+        if stats.extracted_listings
+        else 0.0
+    )
+
+    lines = [
+        "# Image Embedding Report",
+        "",
+        "## Summary",
+        "",
+        f"- Input dataset: `{input_path}`",
+        f"- Output parquet: `{output_path}`",
+        "- Backbone: `torchvision.models.efficientnet_b0` with ImageNet pretrained weights",
+        "- Embedding strategy: classification head removed, per-image feature vector + listing-level mean pooling",
+        f"- Device: **{stats.device_name}**",
+        f"- Batch size: **{batch_size}**",
+        f"- Max images per listing: **{max_images_per_listing}**",
+        "",
+        "## Metrics",
+        "",
+        f"- Toplam multimodal ilan sayisi: **{stats.total_listings:,}**",
+        f"- Embedding cikarilan ilan sayisi: **{stats.extracted_listings:,}**",
+        f"- Skip edilen ilan sayisi: **{stats.skipped_listings:,}**",
+        f"- Ortalama kullanilan gorsel sayisi: **{average_used_images:.2f}**",
+        f"- Embedding dimension: **{stats.embedding_dimension}**",
+        f"- Bozuk / okunamayan gorsel sayisi: **{stats.broken_image_count:,}**",
+        f"- Toplam kullanilan gorsel sayisi: **{stats.total_used_images:,}**",
+    ]
+
+    return "\n".join(lines)
+
+
+def save_outputs(
+    embedding_df: pd.DataFrame,
+    output_path: Path,
+    report_body: str,
+    report_path: Path,
+) -> None:
+    LOGGER.info("Embedding parquet kaydediliyor: %s", output_path)
+    embedding_df.to_parquet(output_path, index=False)
+
+    LOGGER.info("Markdown rapor kaydediliyor: %s", report_path)
+    report_path.write_text(report_body, encoding="utf-8")
+
+
+def build_model(device: torch.device) -> nn.Module:
+    LOGGER.info("EfficientNet-B0 yukleniyor...")
+    model = EfficientNetB0Embedder().to(device)
+    model.eval()
+    return model
+
+
+def main() -> int:
+    configure_logging()
+    args = parse_args()
+
+    input_path = args.input.resolve()
+    output_path = args.output.resolve()
+    report_path = args.report.resolve()
+
+    ensure_output_directories(output_path=output_path, report_path=report_path)
+
+    dataframe = load_dataset(input_path=input_path, limit_listings=args.limit_listings)
+    device = select_device()
+    LOGGER.info("Kullanilan cihaz: %s", device.type)
+
+    image_transform = build_image_transform()
+    model = build_model(device)
+
+    embedding_df, stats = extract_embeddings(
+        dataframe=dataframe,
+        model=model,
+        device=device,
+        image_transform=image_transform,
+        batch_size=args.batch_size,
+        max_images_per_listing=args.max_images_per_listing,
+    )
+
+    report_body = build_report(
+        stats=stats,
+        input_path=input_path,
+        output_path=output_path,
+        batch_size=args.batch_size,
+        max_images_per_listing=args.max_images_per_listing,
+    )
+    save_outputs(
+        embedding_df=embedding_df,
+        output_path=output_path,
+        report_body=report_body,
+        report_path=report_path,
+    )
+
+    LOGGER.info("Tamamlandi.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

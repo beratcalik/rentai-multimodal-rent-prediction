@@ -1,0 +1,3 @@
+venv\Scripts\activate
+python agent_run.py --headful --limit 500 --max-pages 500 --delay-min 0.8 --delay-max 1.5
+python agent_run.py --headful --limit 500 --no-discover

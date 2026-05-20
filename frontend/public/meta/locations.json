@@ -1,0 +1,2098 @@
+{
+  "generated_at": "2026-05-18T21:16:57",
+  "source_dataset": "E:\\rent-agent\\dataset\\train_ready_multimodal.parquet",
+  "total_cities": 1,
+  "total_districts": 16,
+  "total_neighborhoods": 361,
+  "cities": [
+    {
+      "value": "Ankara",
+      "label": "Ankara",
+      "count": 6389,
+      "districts": [
+        {
+          "value": "Çankaya",
+          "label": "Çankaya",
+          "count": 2452,
+          "neighborhoods": [
+            {
+              "value": "Emek Mah.",
+              "label": "Emek Mah.",
+              "count": 119
+            },
+            {
+              "value": "Alacaatlı Mah.",
+              "label": "Alacaatlı Mah.",
+              "count": 92
+            },
+            {
+              "value": "Bahçelievler Mah.",
+              "label": "Bahçelievler Mah.",
+              "count": 79
+            },
+            {
+              "value": "Yukarı Bahçelievler Mah.",
+              "label": "Yukarı Bahçelievler Mah.",
+              "count": 79
+            },
+            {
+              "value": "Birlik Mah.",
+              "label": "Birlik Mah.",
+              "count": 77
+            },
+            {
+              "value": "Harbiye Mah.",
+              "label": "Harbiye Mah.",
+              "count": 70
+            },
+            {
+              "value": "Yaşamkent Mah.",
+              "label": "Yaşamkent Mah.",
+              "count": 57
+            },
+            {
+              "value": "Ayrancı Mah.",
+              "label": "Ayrancı Mah.",
+              "count": 53
+            },
+            {
+              "value": "Büyükesat Mah.",
+              "label": "Büyükesat Mah.",
+              "count": 49
+            },
+            {
+              "value": "İlkbahar Mah.",
+              "label": "İlkbahar Mah.",
+              "count": 42
+            },
+            {
+              "value": "Kırkkonaklar Mah.",
+              "label": "Kırkkonaklar Mah.",
+              "count": 41
+            },
+            {
+              "value": "Huzur Mah.",
+              "label": "Huzur Mah.",
+              "count": 40
+            },
+            {
+              "value": "İşçi Blokları Mah.",
+              "label": "İşçi Blokları Mah.",
+              "count": 40
+            },
+            {
+              "value": "Naci Çakır Mah.",
+              "label": "Naci Çakır Mah.",
+              "count": 40
+            },
+            {
+              "value": "Aziziye Mah.",
+              "label": "Aziziye Mah.",
+              "count": 39
+            },
+            {
+              "value": "Tınaztepe Mah.",
+              "label": "Tınaztepe Mah.",
+              "count": 38
+            },
+            {
+              "value": "İlkadım Mah.",
+              "label": "İlkadım Mah.",
+              "count": 37
+            },
+            {
+              "value": "Kavaklıdere Mah.",
+              "label": "Kavaklıdere Mah.",
+              "count": 36
+            },
+            {
+              "value": "Yukarı Dikmen Mah.",
+              "label": "Yukarı Dikmen Mah.",
+              "count": 36
+            },
+            {
+              "value": "Çamlıtepe Mah.",
+              "label": "Çamlıtepe Mah.",
+              "count": 36
+            },
+            {
+              "value": "Güvenevler Mah.",
+              "label": "Güvenevler Mah.",
+              "count": 35
+            },
+            {
+              "value": "Maltepe Mah.",
+              "label": "Maltepe Mah.",
+              "count": 34
+            },
+            {
+              "value": "Oran Mah.",
+              "label": "Oran Mah.",
+              "count": 34
+            },
+            {
+              "value": "Ata Mah.",
+              "label": "Ata Mah.",
+              "count": 33
+            },
+            {
+              "value": "Konutkent Mah.",
+              "label": "Konutkent Mah.",
+              "count": 32
+            },
+            {
+              "value": "Sokullu Mehmet Paşa Mah.",
+              "label": "Sokullu Mehmet Paşa Mah.",
+              "count": 32
+            },
+            {
+              "value": "Yıldızevler Mah.",
+              "label": "Yıldızevler Mah.",
+              "count": 31
+            },
+            {
+              "value": "Mürsel Uluç Mah.",
+              "label": "Mürsel Uluç Mah.",
+              "count": 29
+            },
+            {
+              "value": "Cevizlidere Mah.",
+              "label": "Cevizlidere Mah.",
+              "count": 28
+            },
+            {
+              "value": "Seyranbağları Mah.",
+              "label": "Seyranbağları Mah.",
+              "count": 28
+            },
+            {
+              "value": "Anıttepe Mah.",
+              "label": "Anıttepe Mah.",
+              "count": 27
+            },
+            {
+              "value": "Aşağı Öveçler Mah.",
+              "label": "Aşağı Öveçler Mah.",
+              "count": 27
+            },
+            {
+              "value": "Barbaros Mah.",
+              "label": "Barbaros Mah.",
+              "count": 26
+            },
+            {
+              "value": "İncesu Mah.",
+              "label": "İncesu Mah.",
+              "count": 25
+            },
+            {
+              "value": "Mutlukent Mah.",
+              "label": "Mutlukent Mah.",
+              "count": 25
+            },
+            {
+              "value": "Kazım Özalp Mah.",
+              "label": "Kazım Özalp Mah.",
+              "count": 24
+            },
+            {
+              "value": "Mebusevleri Mah.",
+              "label": "Mebusevleri Mah.",
+              "count": 24
+            },
+            {
+              "value": "Gaziosmanpaşa Mah.",
+              "label": "Gaziosmanpaşa Mah.",
+              "count": 23
+            },
+            {
+              "value": "Yücetepe Mah.",
+              "label": "Yücetepe Mah.",
+              "count": 23
+            },
+            {
+              "value": "Beytepe Mah.",
+              "label": "Beytepe Mah.",
+              "count": 22
+            },
+            {
+              "value": "Hilal Mah.",
+              "label": "Hilal Mah.",
+              "count": 22
+            },
+            {
+              "value": "Metin Oktay Mah.",
+              "label": "Metin Oktay Mah.",
+              "count": 22
+            },
+            {
+              "value": "Prof. Dr. Ahmet Taner Kışlalı Mah.",
+              "label": "Prof. Dr. Ahmet Taner Kışlalı Mah.",
+              "count": 22
+            },
+            {
+              "value": "Umut Mah.",
+              "label": "Umut Mah.",
+              "count": 22
+            },
+            {
+              "value": "Fakülteler Mah.",
+              "label": "Fakülteler Mah.",
+              "count": 21
+            },
+            {
+              "value": "Karapınar Mah.",
+              "label": "Karapınar Mah.",
+              "count": 21
+            },
+            {
+              "value": "Keklik Pınarı Mah.",
+              "label": "Keklik Pınarı Mah.",
+              "count": 21
+            },
+            {
+              "value": "Akpınar Mah.",
+              "label": "Akpınar Mah.",
+              "count": 20
+            },
+            {
+              "value": "Aşıkpaşa Mah.",
+              "label": "Aşıkpaşa Mah.",
+              "count": 20
+            },
+            {
+              "value": "Kızılay Mah.",
+              "label": "Kızılay Mah.",
+              "count": 20
+            },
+            {
+              "value": "Remzi Oğuz Arık Mah.",
+              "label": "Remzi Oğuz Arık Mah.",
+              "count": 20
+            },
+            {
+              "value": "Çankaya Mah.",
+              "label": "Çankaya Mah.",
+              "count": 20
+            },
+            {
+              "value": "100. Yıl Mah.",
+              "label": "100. Yıl Mah.",
+              "count": 19
+            },
+            {
+              "value": "Ertuğrulgazi Mah.",
+              "label": "Ertuğrulgazi Mah.",
+              "count": 19
+            },
+            {
+              "value": "Esatoğlu Mah.",
+              "label": "Esatoğlu Mah.",
+              "count": 19
+            },
+            {
+              "value": "Osman Temiz Mah.",
+              "label": "Osman Temiz Mah.",
+              "count": 19
+            },
+            {
+              "value": "Ön Cebeci Mah.",
+              "label": "Ön Cebeci Mah.",
+              "count": 19
+            },
+            {
+              "value": "Kültür Mah.",
+              "label": "Kültür Mah.",
+              "count": 18
+            },
+            {
+              "value": "Oğuzlar Mah.",
+              "label": "Oğuzlar Mah.",
+              "count": 17
+            },
+            {
+              "value": "Aydınlar Mah.",
+              "label": "Aydınlar Mah.",
+              "count": 16
+            },
+            {
+              "value": "Güzeltepe Mah.",
+              "label": "Güzeltepe Mah.",
+              "count": 16
+            },
+            {
+              "value": "Öveçler Mah.",
+              "label": "Öveçler Mah.",
+              "count": 16
+            },
+            {
+              "value": "Şehit Cevdet Özdemir Mah.",
+              "label": "Şehit Cevdet Özdemir Mah.",
+              "count": 16
+            },
+            {
+              "value": "İleri Mah.",
+              "label": "İleri Mah.",
+              "count": 15
+            },
+            {
+              "value": "Küçükesat Mah.",
+              "label": "Küçükesat Mah.",
+              "count": 15
+            },
+            {
+              "value": "Balgat Mah.",
+              "label": "Balgat Mah.",
+              "count": 14
+            },
+            {
+              "value": "Cebeci Mah.",
+              "label": "Cebeci Mah.",
+              "count": 14
+            },
+            {
+              "value": "Çiğdem Mah.",
+              "label": "Çiğdem Mah.",
+              "count": 14
+            },
+            {
+              "value": "Çukurambar Mah.",
+              "label": "Çukurambar Mah.",
+              "count": 14
+            },
+            {
+              "value": "Bağcılar Mah.",
+              "label": "Bağcılar Mah.",
+              "count": 13
+            },
+            {
+              "value": "Nasuh Akar Mah.",
+              "label": "Nasuh Akar Mah.",
+              "count": 12
+            },
+            {
+              "value": "Bayraktar Mah.",
+              "label": "Bayraktar Mah.",
+              "count": 11
+            },
+            {
+              "value": "Erzurum Mah.",
+              "label": "Erzurum Mah.",
+              "count": 11
+            },
+            {
+              "value": "Koru Mah.",
+              "label": "Koru Mah.",
+              "count": 11
+            },
+            {
+              "value": "Muhsin Ertuğrul Mah.",
+              "label": "Muhsin Ertuğrul Mah.",
+              "count": 11
+            },
+            {
+              "value": "Şehit Cengiz Karaca Mah.",
+              "label": "Şehit Cengiz Karaca Mah.",
+              "count": 11
+            },
+            {
+              "value": "Metin Akkuş Mah.",
+              "label": "Metin Akkuş Mah.",
+              "count": 10
+            },
+            {
+              "value": "Ümit Mah.",
+              "label": "Ümit Mah.",
+              "count": 10
+            },
+            {
+              "value": "Doğuş Mah.",
+              "label": "Doğuş Mah.",
+              "count": 9
+            },
+            {
+              "value": "Fidanlık Mah.",
+              "label": "Fidanlık Mah.",
+              "count": 9
+            },
+            {
+              "value": "Mustafa Kemal Mah.",
+              "label": "Mustafa Kemal Mah.",
+              "count": 9
+            },
+            {
+              "value": "Üniversiteler Mah.",
+              "label": "Üniversiteler Mah.",
+              "count": 9
+            },
+            {
+              "value": "İlker Mah.",
+              "label": "İlker Mah.",
+              "count": 8
+            },
+            {
+              "value": "Bademlidere Mah.",
+              "label": "Bademlidere Mah.",
+              "count": 7
+            },
+            {
+              "value": "Kızılırmak Mah.",
+              "label": "Kızılırmak Mah.",
+              "count": 7
+            },
+            {
+              "value": "Murat Mah.",
+              "label": "Murat Mah.",
+              "count": 7
+            },
+            {
+              "value": "Topraklık Mah.",
+              "label": "Topraklık Mah.",
+              "count": 7
+            },
+            {
+              "value": "Eti Mah.",
+              "label": "Eti Mah.",
+              "count": 6
+            },
+            {
+              "value": "Malazgirt Mah.",
+              "label": "Malazgirt Mah.",
+              "count": 6
+            },
+            {
+              "value": "Mimar Sinan Mah.",
+              "label": "Mimar Sinan Mah.",
+              "count": 6
+            },
+            {
+              "value": "Sancak Mah.",
+              "label": "Sancak Mah.",
+              "count": 6
+            },
+            {
+              "value": "Yukarı Öveçler Mah.",
+              "label": "Yukarı Öveçler Mah.",
+              "count": 6
+            },
+            {
+              "value": "Zafertepe Mah.",
+              "label": "Zafertepe Mah.",
+              "count": 6
+            },
+            {
+              "value": "Arka Topraklık Mah.",
+              "label": "Arka Topraklık Mah.",
+              "count": 5
+            },
+            {
+              "value": "Gökkuşağı Mah.",
+              "label": "Gökkuşağı Mah.",
+              "count": 5
+            },
+            {
+              "value": "Çayyolu Mah.",
+              "label": "Çayyolu Mah.",
+              "count": 5
+            },
+            {
+              "value": "Dodurga Mah.",
+              "label": "Dodurga Mah.",
+              "count": 4
+            },
+            {
+              "value": "Göktürk Mah.",
+              "label": "Göktürk Mah.",
+              "count": 4
+            },
+            {
+              "value": "Korkutreis Mah.",
+              "label": "Korkutreis Mah.",
+              "count": 4
+            },
+            {
+              "value": "Meşrutiyet Mah.",
+              "label": "Meşrutiyet Mah.",
+              "count": 4
+            },
+            {
+              "value": "Dumlupınar Mah.",
+              "label": "Dumlupınar Mah.",
+              "count": 3
+            },
+            {
+              "value": "Kocatepe Mah.",
+              "label": "Kocatepe Mah.",
+              "count": 3
+            },
+            {
+              "value": "Namık Kemal Mah.",
+              "label": "Namık Kemal Mah.",
+              "count": 3
+            },
+            {
+              "value": "Sağlık Mah.",
+              "label": "Sağlık Mah.",
+              "count": 3
+            },
+            {
+              "value": "Söğütözü Mah.",
+              "label": "Söğütözü Mah.",
+              "count": 3
+            },
+            {
+              "value": "Ehlibeyt Mah.",
+              "label": "Ehlibeyt Mah.",
+              "count": 2
+            },
+            {
+              "value": "Cumhuriyet Mah.",
+              "label": "Cumhuriyet Mah.",
+              "count": 1
+            },
+            {
+              "value": "Devlet Mah.",
+              "label": "Devlet Mah.",
+              "count": 1
+            },
+            {
+              "value": "Dilekler Mah.",
+              "label": "Dilekler Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Keçiören",
+          "label": "Keçiören",
+          "count": 891,
+          "neighborhoods": [
+            {
+              "value": "Ayvalı Mah.",
+              "label": "Ayvalı Mah.",
+              "count": 98
+            },
+            {
+              "value": "Etlik Mah.",
+              "label": "Etlik Mah.",
+              "count": 91
+            },
+            {
+              "value": "Aşağı Eğlence Mah.",
+              "label": "Aşağı Eğlence Mah.",
+              "count": 69
+            },
+            {
+              "value": "İncirli Mah.",
+              "label": "İncirli Mah.",
+              "count": 55
+            },
+            {
+              "value": "Ovacık Mah.",
+              "label": "Ovacık Mah.",
+              "count": 52
+            },
+            {
+              "value": "Tepebaşı Mah.",
+              "label": "Tepebaşı Mah.",
+              "count": 31
+            },
+            {
+              "value": "Yükseltepe Mah.",
+              "label": "Yükseltepe Mah.",
+              "count": 27
+            },
+            {
+              "value": "Esertepe Mah.",
+              "label": "Esertepe Mah.",
+              "count": 26
+            },
+            {
+              "value": "Yayla Mah.",
+              "label": "Yayla Mah.",
+              "count": 26
+            },
+            {
+              "value": "19 Mayıs Mah.",
+              "label": "19 Mayıs Mah.",
+              "count": 23
+            },
+            {
+              "value": "Atapark Mah.",
+              "label": "Atapark Mah.",
+              "count": 23
+            },
+            {
+              "value": "Bağlarbaşı Mah.",
+              "label": "Bağlarbaşı Mah.",
+              "count": 23
+            },
+            {
+              "value": "Basınevleri Mah.",
+              "label": "Basınevleri Mah.",
+              "count": 22
+            },
+            {
+              "value": "Uyanış Mah.",
+              "label": "Uyanış Mah.",
+              "count": 22
+            },
+            {
+              "value": "Kuşcağız Mah.",
+              "label": "Kuşcağız Mah.",
+              "count": 21
+            },
+            {
+              "value": "Emrah Mah.",
+              "label": "Emrah Mah.",
+              "count": 20
+            },
+            {
+              "value": "Kalaba Mah.",
+              "label": "Kalaba Mah.",
+              "count": 20
+            },
+            {
+              "value": "Şenlik Mah.",
+              "label": "Şenlik Mah.",
+              "count": 19
+            },
+            {
+              "value": "Kavacık Subayevleri Mah.",
+              "label": "Kavacık Subayevleri Mah.",
+              "count": 18
+            },
+            {
+              "value": "Güçlükaya Mah.",
+              "label": "Güçlükaya Mah.",
+              "count": 16
+            },
+            {
+              "value": "Pınarbaşı Mah.",
+              "label": "Pınarbaşı Mah.",
+              "count": 16
+            },
+            {
+              "value": "Çiçekli Mah.",
+              "label": "Çiçekli Mah.",
+              "count": 14
+            },
+            {
+              "value": "Sancaktepe Mah.",
+              "label": "Sancaktepe Mah.",
+              "count": 13
+            },
+            {
+              "value": "Adnan Menderes Mah.",
+              "label": "Adnan Menderes Mah.",
+              "count": 12
+            },
+            {
+              "value": "Osmangazi Mah.",
+              "label": "Osmangazi Mah.",
+              "count": 12
+            },
+            {
+              "value": "Şehit Kubilay Mah.",
+              "label": "Şehit Kubilay Mah.",
+              "count": 12
+            },
+            {
+              "value": "Ufuktepe Mah.",
+              "label": "Ufuktepe Mah.",
+              "count": 11
+            },
+            {
+              "value": "Yakacık Mah.",
+              "label": "Yakacık Mah.",
+              "count": 10
+            },
+            {
+              "value": "Kanuni Mah.",
+              "label": "Kanuni Mah.",
+              "count": 9
+            },
+            {
+              "value": "Şefkat Mah.",
+              "label": "Şefkat Mah.",
+              "count": 9
+            },
+            {
+              "value": "Yeşiltepe Mah.",
+              "label": "Yeşiltepe Mah.",
+              "count": 8
+            },
+            {
+              "value": "Bademlik Mah.",
+              "label": "Bademlik Mah.",
+              "count": 7
+            },
+            {
+              "value": "Hasköy Mah.",
+              "label": "Hasköy Mah.",
+              "count": 7
+            },
+            {
+              "value": "Çaldıran Mah.",
+              "label": "Çaldıran Mah.",
+              "count": 7
+            },
+            {
+              "value": "Karargahtepe Mah.",
+              "label": "Karargahtepe Mah.",
+              "count": 6
+            },
+            {
+              "value": "Şenyuva Mah.",
+              "label": "Şenyuva Mah.",
+              "count": 6
+            },
+            {
+              "value": "Aktepe Mah.",
+              "label": "Aktepe Mah.",
+              "count": 5
+            },
+            {
+              "value": "Karakaya Mah.",
+              "label": "Karakaya Mah.",
+              "count": 5
+            },
+            {
+              "value": "Kamil Ocak Mah.",
+              "label": "Kamil Ocak Mah.",
+              "count": 4
+            },
+            {
+              "value": "Köşk Mah.",
+              "label": "Köşk Mah.",
+              "count": 4
+            },
+            {
+              "value": "Güzelyurt Mah.",
+              "label": "Güzelyurt Mah.",
+              "count": 3
+            },
+            {
+              "value": "Hisar Mah.",
+              "label": "Hisar Mah.",
+              "count": 3
+            },
+            {
+              "value": "Karşıyaka Mah.",
+              "label": "Karşıyaka Mah.",
+              "count": 3
+            },
+            {
+              "value": "Kafkas Mah.",
+              "label": "Kafkas Mah.",
+              "count": 2
+            },
+            {
+              "value": "23 Nisan Mah.",
+              "label": "23 Nisan Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Etimesgut",
+          "label": "Etimesgut",
+          "count": 634,
+          "neighborhoods": [
+            {
+              "value": "Atayurt Mah.",
+              "label": "Atayurt Mah.",
+              "count": 52
+            },
+            {
+              "value": "Tunahan Mah.",
+              "label": "Tunahan Mah.",
+              "count": 47
+            },
+            {
+              "value": "Yeni Bağlıca Mah.",
+              "label": "Yeni Bağlıca Mah.",
+              "count": 42
+            },
+            {
+              "value": "Topçu Mah.",
+              "label": "Topçu Mah.",
+              "count": 35
+            },
+            {
+              "value": "Şehit Osman Avcı Mah.",
+              "label": "Şehit Osman Avcı Mah.",
+              "count": 34
+            },
+            {
+              "value": "Yapracık Mah.",
+              "label": "Yapracık Mah.",
+              "count": 30
+            },
+            {
+              "value": "Şeyh Şamil Mah.",
+              "label": "Şeyh Şamil Mah.",
+              "count": 29
+            },
+            {
+              "value": "Bağlıca Mah.",
+              "label": "Bağlıca Mah.",
+              "count": 28
+            },
+            {
+              "value": "Elvan Mah.",
+              "label": "Elvan Mah.",
+              "count": 27
+            },
+            {
+              "value": "Göksu Mah.",
+              "label": "Göksu Mah.",
+              "count": 23
+            },
+            {
+              "value": "Devlet Mah.",
+              "label": "Devlet Mah.",
+              "count": 21
+            },
+            {
+              "value": "İstasyon Mah.",
+              "label": "İstasyon Mah.",
+              "count": 20
+            },
+            {
+              "value": "Piyade Mah.",
+              "label": "Piyade Mah.",
+              "count": 19
+            },
+            {
+              "value": "Alsancak Mah.",
+              "label": "Alsancak Mah.",
+              "count": 18
+            },
+            {
+              "value": "Turkuaz Mah.",
+              "label": "Turkuaz Mah.",
+              "count": 18
+            },
+            {
+              "value": "30 Ağustos Mah.",
+              "label": "30 Ağustos Mah.",
+              "count": 17
+            },
+            {
+              "value": "Eryaman Mah.",
+              "label": "Eryaman Mah.",
+              "count": 17
+            },
+            {
+              "value": "Süvari Mah.",
+              "label": "Süvari Mah.",
+              "count": 17
+            },
+            {
+              "value": "Atakent Mah.",
+              "label": "Atakent Mah.",
+              "count": 16
+            },
+            {
+              "value": "Yeşilova Mah.",
+              "label": "Yeşilova Mah.",
+              "count": 16
+            },
+            {
+              "value": "Ahi Mesut Mah.",
+              "label": "Ahi Mesut Mah.",
+              "count": 15
+            },
+            {
+              "value": "Güzelkent Mah.",
+              "label": "Güzelkent Mah.",
+              "count": 15
+            },
+            {
+              "value": "Kazım Karabekir Mah.",
+              "label": "Kazım Karabekir Mah.",
+              "count": 13
+            },
+            {
+              "value": "Altay Mah.",
+              "label": "Altay Mah.",
+              "count": 11
+            },
+            {
+              "value": "Oğuzlar Mah.",
+              "label": "Oğuzlar Mah.",
+              "count": 11
+            },
+            {
+              "value": "Yukarıyurtçu Mah.",
+              "label": "Yukarıyurtçu Mah.",
+              "count": 11
+            },
+            {
+              "value": "Şeker Mah.",
+              "label": "Şeker Mah.",
+              "count": 9
+            },
+            {
+              "value": "Ayyıldız Mah.",
+              "label": "Ayyıldız Mah.",
+              "count": 6
+            },
+            {
+              "value": "Fatih Sultan Mah.",
+              "label": "Fatih Sultan Mah.",
+              "count": 6
+            },
+            {
+              "value": "Etiler Mah.",
+              "label": "Etiler Mah.",
+              "count": 4
+            },
+            {
+              "value": "Aşağıyurtçu Mah.",
+              "label": "Aşağıyurtçu Mah.",
+              "count": 2
+            },
+            {
+              "value": "Erler Mah.",
+              "label": "Erler Mah.",
+              "count": 2
+            },
+            {
+              "value": "Yavuz Selim Mah.",
+              "label": "Yavuz Selim Mah.",
+              "count": 2
+            },
+            {
+              "value": "Orhun Mah.",
+              "label": "Orhun Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Yenimahalle",
+          "label": "Yenimahalle",
+          "count": 632,
+          "neighborhoods": [
+            {
+              "value": "Yeni Batı Mah.",
+              "label": "Yeni Batı Mah.",
+              "count": 79
+            },
+            {
+              "value": "Emniyet Mah.",
+              "label": "Emniyet Mah.",
+              "count": 34
+            },
+            {
+              "value": "Demetgül Mah.",
+              "label": "Demetgül Mah.",
+              "count": 31
+            },
+            {
+              "value": "Ergazi Mah.",
+              "label": "Ergazi Mah.",
+              "count": 28
+            },
+            {
+              "value": "Kentkoop Mah.",
+              "label": "Kentkoop Mah.",
+              "count": 28
+            },
+            {
+              "value": "Yunus Emre Mah.",
+              "label": "Yunus Emre Mah.",
+              "count": 26
+            },
+            {
+              "value": "Turgut Özal Mah.",
+              "label": "Turgut Özal Mah.",
+              "count": 24
+            },
+            {
+              "value": "Gazi Mah.",
+              "label": "Gazi Mah.",
+              "count": 23
+            },
+            {
+              "value": "Yuvaköy Mah.",
+              "label": "Yuvaköy Mah.",
+              "count": 23
+            },
+            {
+              "value": "Mehmet Akif Ersoy Mah.",
+              "label": "Mehmet Akif Ersoy Mah.",
+              "count": 22
+            },
+            {
+              "value": "Demetlale Mah.",
+              "label": "Demetlale Mah.",
+              "count": 21
+            },
+            {
+              "value": "Ergenekon Mah.",
+              "label": "Ergenekon Mah.",
+              "count": 21
+            },
+            {
+              "value": "Beştepe Mah.",
+              "label": "Beştepe Mah.",
+              "count": 19
+            },
+            {
+              "value": "İnönü Mah.",
+              "label": "İnönü Mah.",
+              "count": 19
+            },
+            {
+              "value": "Demetevler Mah.",
+              "label": "Demetevler Mah.",
+              "count": 16
+            },
+            {
+              "value": "Batı Sitesi Mah.",
+              "label": "Batı Sitesi Mah.",
+              "count": 13
+            },
+            {
+              "value": "Güventepe Mah.",
+              "label": "Güventepe Mah.",
+              "count": 12
+            },
+            {
+              "value": "Işınlar Mah.",
+              "label": "Işınlar Mah.",
+              "count": 11
+            },
+            {
+              "value": "Pamuklar Mah.",
+              "label": "Pamuklar Mah.",
+              "count": 11
+            },
+            {
+              "value": "Serhat Mah.",
+              "label": "Serhat Mah.",
+              "count": 11
+            },
+            {
+              "value": "Esentepe Mah.",
+              "label": "Esentepe Mah.",
+              "count": 10
+            },
+            {
+              "value": "Kardelen Mah.",
+              "label": "Kardelen Mah.",
+              "count": 10
+            },
+            {
+              "value": "Ragıp Tüzün Mah.",
+              "label": "Ragıp Tüzün Mah.",
+              "count": 10
+            },
+            {
+              "value": "Varlık Mah.",
+              "label": "Varlık Mah.",
+              "count": 10
+            },
+            {
+              "value": "Ata Mah.",
+              "label": "Ata Mah.",
+              "count": 9
+            },
+            {
+              "value": "Çamlıca Mah.",
+              "label": "Çamlıca Mah.",
+              "count": 8
+            },
+            {
+              "value": "Burç Mah.",
+              "label": "Burç Mah.",
+              "count": 7
+            },
+            {
+              "value": "İlkyerleşim Mah.",
+              "label": "İlkyerleşim Mah.",
+              "count": 7
+            },
+            {
+              "value": "Tepealtı Mah.",
+              "label": "Tepealtı Mah.",
+              "count": 7
+            },
+            {
+              "value": "Çiğdemtepe Mah.",
+              "label": "Çiğdemtepe Mah.",
+              "count": 7
+            },
+            {
+              "value": "Gayret Mah.",
+              "label": "Gayret Mah.",
+              "count": 6
+            },
+            {
+              "value": "Karşıyaka Mah.",
+              "label": "Karşıyaka Mah.",
+              "count": 6
+            },
+            {
+              "value": "Susuz Mah.",
+              "label": "Susuz Mah.",
+              "count": 6
+            },
+            {
+              "value": "Kaletepe Mah.",
+              "label": "Kaletepe Mah.",
+              "count": 5
+            },
+            {
+              "value": "Çarşı Mah.",
+              "label": "Çarşı Mah.",
+              "count": 5
+            },
+            {
+              "value": "Aşağı Yahyalar Mah.",
+              "label": "Aşağı Yahyalar Mah.",
+              "count": 4
+            },
+            {
+              "value": "Uğur Mumcu Mah.",
+              "label": "Uğur Mumcu Mah.",
+              "count": 4
+            },
+            {
+              "value": "Yakacık Mah.",
+              "label": "Yakacık Mah.",
+              "count": 4
+            },
+            {
+              "value": "Yeniçağ Mah.",
+              "label": "Yeniçağ Mah.",
+              "count": 4
+            },
+            {
+              "value": "Yeşilevler Mah.",
+              "label": "Yeşilevler Mah.",
+              "count": 4
+            },
+            {
+              "value": "Anadolu Mah.",
+              "label": "Anadolu Mah.",
+              "count": 3
+            },
+            {
+              "value": "Güzelyaka Mah.",
+              "label": "Güzelyaka Mah.",
+              "count": 3
+            },
+            {
+              "value": "Kayalar Mah.",
+              "label": "Kayalar Mah.",
+              "count": 3
+            },
+            {
+              "value": "Yukarı Yahyalar Mah.",
+              "label": "Yukarı Yahyalar Mah.",
+              "count": 3
+            },
+            {
+              "value": "Özevler Mah.",
+              "label": "Özevler Mah.",
+              "count": 3
+            },
+            {
+              "value": "25 Mart Mah.",
+              "label": "25 Mart Mah.",
+              "count": 2
+            },
+            {
+              "value": "Avcılar Mah.",
+              "label": "Avcılar Mah.",
+              "count": 2
+            },
+            {
+              "value": "Barış Mah.",
+              "label": "Barış Mah.",
+              "count": 2
+            },
+            {
+              "value": "Barıştepe Mah.",
+              "label": "Barıştepe Mah.",
+              "count": 2
+            },
+            {
+              "value": "Kuzey Yıldızı Mah.",
+              "label": "Kuzey Yıldızı Mah.",
+              "count": 2
+            },
+            {
+              "value": "Ostim Mah.",
+              "label": "Ostim Mah.",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "value": "Mamak",
+          "label": "Mamak",
+          "count": 561,
+          "neighborhoods": [
+            {
+              "value": "Cengizhan Mah.",
+              "label": "Cengizhan Mah.",
+              "count": 37
+            },
+            {
+              "value": "Akşemsettin Mah.",
+              "label": "Akşemsettin Mah.",
+              "count": 36
+            },
+            {
+              "value": "General Zeki Doğan Mah.",
+              "label": "General Zeki Doğan Mah.",
+              "count": 35
+            },
+            {
+              "value": "Durali Alıç Mah.",
+              "label": "Durali Alıç Mah.",
+              "count": 33
+            },
+            {
+              "value": "Balkiraz Mah.",
+              "label": "Balkiraz Mah.",
+              "count": 29
+            },
+            {
+              "value": "Zirvekent Mah.",
+              "label": "Zirvekent Mah.",
+              "count": 28
+            },
+            {
+              "value": "Abidinpaşa Mah.",
+              "label": "Abidinpaşa Mah.",
+              "count": 23
+            },
+            {
+              "value": "Şahintepe Mah.",
+              "label": "Şahintepe Mah.",
+              "count": 22
+            },
+            {
+              "value": "Demirlibahçe Mah.",
+              "label": "Demirlibahçe Mah.",
+              "count": 21
+            },
+            {
+              "value": "Ege Mah.",
+              "label": "Ege Mah.",
+              "count": 21
+            },
+            {
+              "value": "Saimekadın Mah.",
+              "label": "Saimekadın Mah.",
+              "count": 18
+            },
+            {
+              "value": "Fahri Korutürk Mah.",
+              "label": "Fahri Korutürk Mah.",
+              "count": 16
+            },
+            {
+              "value": "Yeşilbayır Mah.",
+              "label": "Yeşilbayır Mah.",
+              "count": 16
+            },
+            {
+              "value": "Tuzluçayır Mah.",
+              "label": "Tuzluçayır Mah.",
+              "count": 15
+            },
+            {
+              "value": "Harman Mah.",
+              "label": "Harman Mah.",
+              "count": 14
+            },
+            {
+              "value": "Mutlu Mah.",
+              "label": "Mutlu Mah.",
+              "count": 14
+            },
+            {
+              "value": "Hürel Mah.",
+              "label": "Hürel Mah.",
+              "count": 13
+            },
+            {
+              "value": "Aşık Veysel Mah.",
+              "label": "Aşık Veysel Mah.",
+              "count": 12
+            },
+            {
+              "value": "Diriliş Mah.",
+              "label": "Diriliş Mah.",
+              "count": 12
+            },
+            {
+              "value": "Kutlu Mah.",
+              "label": "Kutlu Mah.",
+              "count": 11
+            },
+            {
+              "value": "Bahçelerüstü Mah.",
+              "label": "Bahçelerüstü Mah.",
+              "count": 10
+            },
+            {
+              "value": "Misket Mah.",
+              "label": "Misket Mah.",
+              "count": 10
+            },
+            {
+              "value": "Mehtap Mah.",
+              "label": "Mehtap Mah.",
+              "count": 9
+            },
+            {
+              "value": "Çağlayan Mah.",
+              "label": "Çağlayan Mah.",
+              "count": 9
+            },
+            {
+              "value": "Küçük Kayaş Mah.",
+              "label": "Küçük Kayaş Mah.",
+              "count": 8
+            },
+            {
+              "value": "Peyami Safa Mah.",
+              "label": "Peyami Safa Mah.",
+              "count": 8
+            },
+            {
+              "value": "Bahçeleriçi Mah.",
+              "label": "Bahçeleriçi Mah.",
+              "count": 6
+            },
+            {
+              "value": "Bostancık Mah.",
+              "label": "Bostancık Mah.",
+              "count": 6
+            },
+            {
+              "value": "Boğaziçi Mah.",
+              "label": "Boğaziçi Mah.",
+              "count": 5
+            },
+            {
+              "value": "Türközü Mah.",
+              "label": "Türközü Mah.",
+              "count": 5
+            },
+            {
+              "value": "Şafaktepe Mah.",
+              "label": "Şafaktepe Mah.",
+              "count": 5
+            },
+            {
+              "value": "Derbent Mah.",
+              "label": "Derbent Mah.",
+              "count": 4
+            },
+            {
+              "value": "Gülveren Mah.",
+              "label": "Gülveren Mah.",
+              "count": 4
+            },
+            {
+              "value": "Hüseyingazi Mah.",
+              "label": "Hüseyingazi Mah.",
+              "count": 4
+            },
+            {
+              "value": "Kayaş Mah.",
+              "label": "Kayaş Mah.",
+              "count": 4
+            },
+            {
+              "value": "Kazım Orbay Mah.",
+              "label": "Kazım Orbay Mah.",
+              "count": 4
+            },
+            {
+              "value": "Üreğil Mah.",
+              "label": "Üreğil Mah.",
+              "count": 4
+            },
+            {
+              "value": "Şirintepe Mah.",
+              "label": "Şirintepe Mah.",
+              "count": 4
+            },
+            {
+              "value": "Altıağaç Mah.",
+              "label": "Altıağaç Mah.",
+              "count": 3
+            },
+            {
+              "value": "Ekin Mah.",
+              "label": "Ekin Mah.",
+              "count": 3
+            },
+            {
+              "value": "Kartaltepe Mah.",
+              "label": "Kartaltepe Mah.",
+              "count": 3
+            },
+            {
+              "value": "Şahap Gürler Mah.",
+              "label": "Şahap Gürler Mah.",
+              "count": 3
+            },
+            {
+              "value": "Akdere Mah.",
+              "label": "Akdere Mah.",
+              "count": 2
+            },
+            {
+              "value": "Altınevler Mah.",
+              "label": "Altınevler Mah.",
+              "count": 2
+            },
+            {
+              "value": "Başak Mah.",
+              "label": "Başak Mah.",
+              "count": 2
+            },
+            {
+              "value": "Karaağaç Mah.",
+              "label": "Karaağaç Mah.",
+              "count": 2
+            },
+            {
+              "value": "Kıbrısköy Mah.",
+              "label": "Kıbrısköy Mah.",
+              "count": 2
+            },
+            {
+              "value": "Yeni Bayındır Mah.",
+              "label": "Yeni Bayındır Mah.",
+              "count": 2
+            },
+            {
+              "value": "Araplar Mah.",
+              "label": "Araplar Mah.",
+              "count": 1
+            },
+            {
+              "value": "Kusunlar Mah.",
+              "label": "Kusunlar Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Gölbaşı",
+          "label": "Gölbaşı",
+          "count": 359,
+          "neighborhoods": [
+            {
+              "value": "İncek Mah.",
+              "label": "İncek Mah.",
+              "count": 143
+            },
+            {
+              "value": "Taşpınar Mah.",
+              "label": "Taşpınar Mah.",
+              "count": 85
+            },
+            {
+              "value": "Kızılcaşar Mah.",
+              "label": "Kızılcaşar Mah.",
+              "count": 44
+            },
+            {
+              "value": "Bahçelievler Mah.",
+              "label": "Bahçelievler Mah.",
+              "count": 23
+            },
+            {
+              "value": "Örencik Mah.",
+              "label": "Örencik Mah.",
+              "count": 18
+            },
+            {
+              "value": "Hacılar Mah.",
+              "label": "Hacılar Mah.",
+              "count": 10
+            },
+            {
+              "value": "Eymir Mah.",
+              "label": "Eymir Mah.",
+              "count": 9
+            },
+            {
+              "value": "Seğmenler Mah.",
+              "label": "Seğmenler Mah.",
+              "count": 9
+            },
+            {
+              "value": "Şafak Mah.",
+              "label": "Şafak Mah.",
+              "count": 7
+            },
+            {
+              "value": "Karşıyaka Mah.",
+              "label": "Karşıyaka Mah.",
+              "count": 6
+            },
+            {
+              "value": "Gaziosmanpaşa Mah.",
+              "label": "Gaziosmanpaşa Mah.",
+              "count": 4
+            },
+            {
+              "value": "Tulumtaş Mah.",
+              "label": "Tulumtaş Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Sincan",
+          "label": "Sincan",
+          "count": 344,
+          "neighborhoods": [
+            {
+              "value": "Fevzi Çakmak Mah.",
+              "label": "Fevzi Çakmak Mah.",
+              "count": 30
+            },
+            {
+              "value": "Mareşal Çakmak Mah.",
+              "label": "Mareşal Çakmak Mah.",
+              "count": 30
+            },
+            {
+              "value": "Mustafa Kemal Mah.",
+              "label": "Mustafa Kemal Mah.",
+              "count": 27
+            },
+            {
+              "value": "Saraycık Mah.",
+              "label": "Saraycık Mah.",
+              "count": 27
+            },
+            {
+              "value": "Gökçek Mah.",
+              "label": "Gökçek Mah.",
+              "count": 19
+            },
+            {
+              "value": "Menderes Mah.",
+              "label": "Menderes Mah.",
+              "count": 18
+            },
+            {
+              "value": "29 Ekim Mah.",
+              "label": "29 Ekim Mah.",
+              "count": 16
+            },
+            {
+              "value": "Ertuğrulgazi Mah.",
+              "label": "Ertuğrulgazi Mah.",
+              "count": 16
+            },
+            {
+              "value": "Törekent Mah.",
+              "label": "Törekent Mah.",
+              "count": 16
+            },
+            {
+              "value": "Selçuklu Mah.",
+              "label": "Selçuklu Mah.",
+              "count": 14
+            },
+            {
+              "value": "Akşemsettin Mah.",
+              "label": "Akşemsettin Mah.",
+              "count": 13
+            },
+            {
+              "value": "Gazi Osmanpaşa Mah.",
+              "label": "Gazi Osmanpaşa Mah.",
+              "count": 12
+            },
+            {
+              "value": "Malazgirt Mah.",
+              "label": "Malazgirt Mah.",
+              "count": 12
+            },
+            {
+              "value": "Plevne Mah.",
+              "label": "Plevne Mah.",
+              "count": 12
+            },
+            {
+              "value": "Tandoğan Mah.",
+              "label": "Tandoğan Mah.",
+              "count": 12
+            },
+            {
+              "value": "Atatürk Mah.",
+              "label": "Atatürk Mah.",
+              "count": 10
+            },
+            {
+              "value": "Alcı Mah.",
+              "label": "Alcı Mah.",
+              "count": 9
+            },
+            {
+              "value": "İstasyon Mah.",
+              "label": "İstasyon Mah.",
+              "count": 8
+            },
+            {
+              "value": "Andiçen Mah.",
+              "label": "Andiçen Mah.",
+              "count": 7
+            },
+            {
+              "value": "Pınarbaşı Mah.",
+              "label": "Pınarbaşı Mah.",
+              "count": 7
+            },
+            {
+              "value": "Mevlana Mah.",
+              "label": "Mevlana Mah.",
+              "count": 6
+            },
+            {
+              "value": "Fatih Mah.",
+              "label": "Fatih Mah.",
+              "count": 5
+            },
+            {
+              "value": "Ulubatlı Hasan Mah.",
+              "label": "Ulubatlı Hasan Mah.",
+              "count": 5
+            },
+            {
+              "value": "Hürriyet Mah.",
+              "label": "Hürriyet Mah.",
+              "count": 4
+            },
+            {
+              "value": "Osmanlı Mah.",
+              "label": "Osmanlı Mah.",
+              "count": 4
+            },
+            {
+              "value": "Yunus Emre Mah.",
+              "label": "Yunus Emre Mah.",
+              "count": 2
+            },
+            {
+              "value": "Ahi Evran Mah.",
+              "label": "Ahi Evran Mah.",
+              "count": 1
+            },
+            {
+              "value": "Gazi Mah.",
+              "label": "Gazi Mah.",
+              "count": 1
+            },
+            {
+              "value": "Yeniçimşit Mah.",
+              "label": "Yeniçimşit Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Altındağ",
+          "label": "Altındağ",
+          "count": 216,
+          "neighborhoods": [
+            {
+              "value": "Aydınlıkevler Mah.",
+              "label": "Aydınlıkevler Mah.",
+              "count": 61
+            },
+            {
+              "value": "Güneşevler Mah.",
+              "label": "Güneşevler Mah.",
+              "count": 25
+            },
+            {
+              "value": "Örnek Mah.",
+              "label": "Örnek Mah.",
+              "count": 25
+            },
+            {
+              "value": "Yıldıztepe Mah.",
+              "label": "Yıldıztepe Mah.",
+              "count": 15
+            },
+            {
+              "value": "Zübeyde Hanım Mah.",
+              "label": "Zübeyde Hanım Mah.",
+              "count": 15
+            },
+            {
+              "value": "Hacettepe Mah.",
+              "label": "Hacettepe Mah.",
+              "count": 13
+            },
+            {
+              "value": "Gültepe Mah.",
+              "label": "Gültepe Mah.",
+              "count": 12
+            },
+            {
+              "value": "Baraj Mah.",
+              "label": "Baraj Mah.",
+              "count": 8
+            },
+            {
+              "value": "Karapürçek Mah.",
+              "label": "Karapürçek Mah.",
+              "count": 8
+            },
+            {
+              "value": "Doğantepe Mah.",
+              "label": "Doğantepe Mah.",
+              "count": 7
+            },
+            {
+              "value": "Başpınar Mah.",
+              "label": "Başpınar Mah.",
+              "count": 6
+            },
+            {
+              "value": "Beşikkaya Mah.",
+              "label": "Beşikkaya Mah.",
+              "count": 5
+            },
+            {
+              "value": "Battalgazi Mah.",
+              "label": "Battalgazi Mah.",
+              "count": 4
+            },
+            {
+              "value": "Feridun Çelik Mah.",
+              "label": "Feridun Çelik Mah.",
+              "count": 3
+            },
+            {
+              "value": "Karacaören Mah.",
+              "label": "Karacaören Mah.",
+              "count": 3
+            },
+            {
+              "value": "Ulubey Mah.",
+              "label": "Ulubey Mah.",
+              "count": 3
+            },
+            {
+              "value": "Atıfbey Mah.",
+              "label": "Atıfbey Mah.",
+              "count": 1
+            },
+            {
+              "value": "Hacı Bayram Mah.",
+              "label": "Hacı Bayram Mah.",
+              "count": 1
+            },
+            {
+              "value": "Önder Mah.",
+              "label": "Önder Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Çubuk",
+          "label": "Çubuk",
+          "count": 103,
+          "neighborhoods": [
+            {
+              "value": "Esenboğa Merkez Mah.",
+              "label": "Esenboğa Merkez Mah.",
+              "count": 45
+            },
+            {
+              "value": "Yıldırım Beyazıt Mah.",
+              "label": "Yıldırım Beyazıt Mah.",
+              "count": 20
+            },
+            {
+              "value": "Dumlupınar Mah.",
+              "label": "Dumlupınar Mah.",
+              "count": 14
+            },
+            {
+              "value": "Cumhuriyet Mah.",
+              "label": "Cumhuriyet Mah.",
+              "count": 8
+            },
+            {
+              "value": "Muhsin Yazıcıoğlu Mah.",
+              "label": "Muhsin Yazıcıoğlu Mah.",
+              "count": 4
+            },
+            {
+              "value": "Yenice Mah.",
+              "label": "Yenice Mah.",
+              "count": 4
+            },
+            {
+              "value": "Atatürk Mah.",
+              "label": "Atatürk Mah.",
+              "count": 3
+            },
+            {
+              "value": "Yavuzselim Mah.",
+              "label": "Yavuzselim Mah.",
+              "count": 3
+            },
+            {
+              "value": "Barbaros Mah.",
+              "label": "Barbaros Mah.",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "value": "Polatlı",
+          "label": "Polatlı",
+          "count": 97,
+          "neighborhoods": [
+            {
+              "value": "Şehitlik Mah.",
+              "label": "Şehitlik Mah.",
+              "count": 28
+            },
+            {
+              "value": "Cumhuriyet Mah.",
+              "label": "Cumhuriyet Mah.",
+              "count": 24
+            },
+            {
+              "value": "Şentepe Mah.",
+              "label": "Şentepe Mah.",
+              "count": 11
+            },
+            {
+              "value": "Gazi Mah.",
+              "label": "Gazi Mah.",
+              "count": 8
+            },
+            {
+              "value": "İstiklal Mah.",
+              "label": "İstiklal Mah.",
+              "count": 7
+            },
+            {
+              "value": "Mehmet Akif Mah.",
+              "label": "Mehmet Akif Mah.",
+              "count": 5
+            },
+            {
+              "value": "Fatih Mah.",
+              "label": "Fatih Mah.",
+              "count": 4
+            },
+            {
+              "value": "Kurtuluş Mah.",
+              "label": "Kurtuluş Mah.",
+              "count": 3
+            },
+            {
+              "value": "Yeni Mah.",
+              "label": "Yeni Mah.",
+              "count": 2
+            },
+            {
+              "value": "Zafer Mah.",
+              "label": "Zafer Mah.",
+              "count": 2
+            },
+            {
+              "value": "Basrı Mah.",
+              "label": "Basrı Mah.",
+              "count": 1
+            },
+            {
+              "value": "Esentepe Mah.",
+              "label": "Esentepe Mah.",
+              "count": 1
+            },
+            {
+              "value": "Karapınar Mah.",
+              "label": "Karapınar Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Pursaklar",
+          "label": "Pursaklar",
+          "count": 57,
+          "neighborhoods": [
+            {
+              "value": "Fatih Mah.",
+              "label": "Fatih Mah.",
+              "count": 14
+            },
+            {
+              "value": "Mimar Sinan Mah.",
+              "label": "Mimar Sinan Mah.",
+              "count": 12
+            },
+            {
+              "value": "Merkez Mah.",
+              "label": "Merkez Mah.",
+              "count": 10
+            },
+            {
+              "value": "Yunus Emre Mah.",
+              "label": "Yunus Emre Mah.",
+              "count": 7
+            },
+            {
+              "value": "Saray Fatih Mah.",
+              "label": "Saray Fatih Mah.",
+              "count": 6
+            },
+            {
+              "value": "Saray Osmangazi Mah.",
+              "label": "Saray Osmangazi Mah.",
+              "count": 5
+            },
+            {
+              "value": "Altınova Mah.",
+              "label": "Altınova Mah.",
+              "count": 1
+            },
+            {
+              "value": "Saray Cumhuriyet Mah.",
+              "label": "Saray Cumhuriyet Mah.",
+              "count": 1
+            },
+            {
+              "value": "Tevfik İleri Mah.",
+              "label": "Tevfik İleri Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Akyurt",
+          "label": "Akyurt",
+          "count": 26,
+          "neighborhoods": [
+            {
+              "value": "Balıkhisar Mah.",
+              "label": "Balıkhisar Mah.",
+              "count": 11
+            },
+            {
+              "value": "Yeşiltepe Mah.",
+              "label": "Yeşiltepe Mah.",
+              "count": 7
+            },
+            {
+              "value": "Yıldırım Mah.",
+              "label": "Yıldırım Mah.",
+              "count": 6
+            },
+            {
+              "value": "Saracalar Mah.",
+              "label": "Saracalar Mah.",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "value": "Beypazarı",
+          "label": "Beypazarı",
+          "count": 5,
+          "neighborhoods": [
+            {
+              "value": "Ayvaşık Mah.",
+              "label": "Ayvaşık Mah.",
+              "count": 3
+            },
+            {
+              "value": "Hacıkara Mah.",
+              "label": "Hacıkara Mah.",
+              "count": 1
+            },
+            {
+              "value": "Kurtuluş Mah.",
+              "label": "Kurtuluş Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Elmadağ",
+          "label": "Elmadağ",
+          "count": 4,
+          "neighborhoods": [
+            {
+              "value": "Hasanoğlan Bahçelievler Mah.",
+              "label": "Hasanoğlan Bahçelievler Mah.",
+              "count": 2
+            },
+            {
+              "value": "Gümüşpala Mah.",
+              "label": "Gümüşpala Mah.",
+              "count": 1
+            },
+            {
+              "value": "İsmetpaşa Mah.",
+              "label": "İsmetpaşa Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Kahramankazan",
+          "label": "Kahramankazan",
+          "count": 4,
+          "neighborhoods": [
+            {
+              "value": "Atatürk Mah.",
+              "label": "Atatürk Mah.",
+              "count": 3
+            },
+            {
+              "value": "Kayı Mah.",
+              "label": "Kayı Mah.",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "value": "Şereflikoçhisar",
+          "label": "Şereflikoçhisar",
+          "count": 4,
+          "neighborhoods": [
+            {
+              "value": "İstiklal Mah.",
+              "label": "İstiklal Mah.",
+              "count": 3
+            },
+            {
+              "value": "Emek Mah.",
+              "label": "Emek Mah.",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

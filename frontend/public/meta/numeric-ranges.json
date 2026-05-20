@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-05-18T21:16:57",
+  "source_dataset": "E:\\rent-agent\\dataset\\train_ready_multimodal.parquet",
+  "fields": {
+    "m2_gross": {
+      "display_name": "Brüt m²",
+      "frontend_input": true,
+      "min": 14,
+      "max": 480,
+      "median": 115,
+      "p05": 50.4,
+      "p95": 200,
+      "missing_count": 0
+    },
+    "dues_try": {
+      "display_name": "Aidat",
+      "frontend_input": true,
+      "min": 1,
+      "max": 1750000,
+      "median": 500,
+      "p05": 100,
+      "p95": 4500,
+      "missing_count": 2126
+    },
+    "price_try": {
+      "display_name": "Kira fiyatı",
+      "frontend_input": false,
+      "min": 8000,
+      "max": 320000,
+      "median": 30000,
+      "p05": 18000,
+      "p95": 65000,
+      "missing_count": 0
+    }
+  }
+}
