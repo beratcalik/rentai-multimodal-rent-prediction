@@ -9,7 +9,7 @@ uvicorn>=0.32
 python-multipart>=0.0.9
 open_clip_torch>=2.26
 transformers>=4.53
+xgboost>=2.0
 
 # Optional baseline extensions
 # lightgbm>=4.0
-# xgboost>=2.0
