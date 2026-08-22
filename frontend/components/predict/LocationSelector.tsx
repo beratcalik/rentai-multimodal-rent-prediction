@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo } from "react";
 
-import type { LocationsMetadata, MetadataOption } from "@/lib/meta/load-metadata";
 import { MetadataSelect } from "@/components/predict/MetadataSelect";
+import type { LocationsMetadata, MetadataOption } from "@/lib/meta/load-metadata";
 
 type LocationSelectorProps = {
   metadata: LocationsMetadata;
@@ -63,7 +63,7 @@ export function LocationSelector({
   const neighborhoodOptions = useMemo(() => toOptions(selectedDistrict?.neighborhoods ?? []), [selectedDistrict]);
 
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid gap-x-5 gap-y-4 lg:grid-cols-3">
       <MetadataSelect
         id="city"
         label="Şehir"
@@ -97,7 +97,7 @@ export function LocationSelector({
         onValueChange={onNeighborhoodChange}
         options={neighborhoodOptions}
         placeholder={district ? "Mahalle seçin" : "Önce ilçe seçin"}
-        helperText="Mahalle alanında arama yapabilirsiniz."
+        helperText="Bu ilçe için mahalle bulunamadı."
         errorMessage={errors?.neighborhood}
         disabled={disabled || !district}
         searchable

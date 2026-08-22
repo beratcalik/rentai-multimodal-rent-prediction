@@ -1,14 +1,13 @@
+import { PredictHero } from "@/components/predict/PredictHero";
 import { PredictWorkspace } from "@/components/predict/PredictWorkspace";
 
 export default function PredictPage() {
   return (
-    <div className="container py-8 md:py-10">
-      <div className="mb-5 space-y-1.5">
-        <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-foreground">Kira tahmini</h1>
-        <p className="text-[15px] leading-6 text-muted-foreground">Bilgileri girin, beklenen kira aralığını görün.</p>
+    <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1500px] py-4 sm:w-[calc(100%_-_48px)] sm:py-5 lg:w-[calc(100%_-_96px)] lg:py-6">
+      <div className="space-y-4">
+        <PredictHero />
+        <PredictWorkspace />
       </div>
-
-      <PredictWorkspace />
     </div>
   );
 }

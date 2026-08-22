@@ -59,6 +59,19 @@ export const predictionFormSchema = z.object({
 
 export type PredictionFormValues = z.infer<typeof predictionFormSchema>;
 
+export const similarListingSchema = z.object({
+  district: z.string(),
+  neighborhood: z.string(),
+  rooms: z.string(),
+  m2_gross: z.number().nullable().optional(),
+  building_age: z.number().nullable().optional(),
+  floor: z.string().nullable().optional(),
+  price_try: z.number().int(),
+  price_formatted: z.string(),
+  similarity_score: z.number().int().min(0).max(100),
+  similarity_reasons: z.array(z.string()).optional().default([]),
+});
+
 export const predictionResponseSchema = z.object({
   predicted_rent_try: z.number().int(),
   predicted_rent_formatted: z.string(),
@@ -66,9 +79,16 @@ export const predictionResponseSchema = z.object({
   model_name: z.string(),
   warnings: z.array(z.string()),
   message: z.string(),
+  confidence_score: z.number().int().min(0).max(100),
+  confidence_label: z.enum(["Yüksek", "Orta", "Düşük"]).optional(),
+  confidence_reasons: z.array(z.string()).optional().default([]),
+  top_positive_factors: z.array(z.string()).default([]),
+  top_negative_factors: z.array(z.string()).default([]),
+  similar_listings: z.array(similarListingSchema).optional().default([]),
 });
 
 export type PredictionResponse = z.infer<typeof predictionResponseSchema>;
+export type SimilarListing = z.infer<typeof similarListingSchema>;
 
 export const predictionDefaultValues: PredictionFormValues = {
   city: "Ankara",
@@ -84,7 +104,7 @@ export const predictionDefaultValues: PredictionFormValues = {
   fuel_type: "",
   is_furnished: "",
   dues_try: "",
-  home_type: "",
+  home_type: "Daire",
   home_shape: "",
   title: "",
   description: "",

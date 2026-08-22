@@ -3,11 +3,11 @@
 import { Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import type { MetadataOption } from "@/lib/meta/load-metadata";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
+import type { MetadataOption } from "@/lib/meta/load-metadata";
+import { cn } from "@/lib/utils";
 
 type MetadataSelectProps = {
   id: string;
@@ -55,17 +55,18 @@ export function MetadataSelect({
     return options.filter((option) => option.label.toLocaleLowerCase("tr-TR").includes(normalizedQuery));
   }, [options, query]);
 
-  const helperNode = filteredOptions.length === 0
-    ? <p className="text-xs text-muted-foreground">{emptyMessage}</p>
-    : errorMessage
-      ? <p className="text-xs text-error">{errorMessage}</p>
-      : helperText
-        ? <p className="text-xs text-muted-foreground">{helperText}</p>
-        : <p className="text-xs text-transparent">.</p>;
+  const helperNode =
+    filteredOptions.length === 0 ? (
+      <p className="text-[12px] text-muted-foreground">{emptyMessage}</p>
+    ) : errorMessage ? (
+      <p className="text-[12px] text-error">{errorMessage}</p>
+    ) : helperText ? (
+      <p className="text-[12px] text-muted-foreground">{helperText}</p>
+    ) : null;
 
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id}>
+      <Label htmlFor={id} className="text-[13px] font-medium">
         {label}
         {required ? <span className="ml-1 text-error">*</span> : null}
       </Label>
@@ -90,7 +91,7 @@ export function MetadataSelect({
         onChange={(event) => onValueChange(event.target.value)}
         disabled={disabled || filteredOptions.length === 0}
         aria-invalid={Boolean(errorMessage)}
-        className={cn(errorMessage && "border-error/40 focus-visible:border-error")}
+        className={cn("text-[14px]", errorMessage && "border-error/40 focus-visible:border-error")}
       >
         <option value="">{placeholder ?? `${label} seçin`}</option>
         {filteredOptions.map((option) => (

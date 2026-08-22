@@ -15,7 +15,7 @@ export class PredictionApiError extends Error {
 }
 
 function getPredictionEndpoint() {
-  return "/api/predict";
+  return "/api/predict-with-explanations";
 }
 
 function buildPredictionFormData(formValues: PredictionFormValues, files: File[]) {
@@ -42,6 +42,11 @@ function buildPredictionFormData(formValues: PredictionFormValues, files: File[]
   ];
 
   for (const field of fields) {
+    if (field === "home_type") {
+      formData.append(field, (formValues.home_type || "Daire") as string);
+      continue;
+    }
+
     formData.append(field, formValues[field] ?? "");
   }
 
@@ -70,6 +75,18 @@ function mapBackendError(status: number, detail?: string) {
   }
 
   return detail || "Tahmin isteği işlenemedi. Lütfen alanları kontrol edip tekrar deneyin.";
+}
+
+function normalizeConfidenceLabel(score: number) {
+  if (score >= 80) {
+    return "Yüksek" as const;
+  }
+
+  if (score >= 60) {
+    return "Orta" as const;
+  }
+
+  return "Düşük" as const;
 }
 
 async function parseErrorDetail(response: Response) {
@@ -114,7 +131,14 @@ export async function createPrediction(formValues: PredictionFormValues, files: 
     }
 
     const payload = await response.json();
-    return predictionResponseSchema.parse(payload);
+    const parsed = predictionResponseSchema.parse(payload);
+
+    return {
+      ...parsed,
+      confidence_label: parsed.confidence_label ?? normalizeConfidenceLabel(parsed.confidence_score),
+      confidence_reasons: parsed.confidence_reasons ?? [],
+      similar_listings: parsed.similar_listings ?? [],
+    };
   } catch (error) {
     if (error instanceof PredictionApiError) {
       throw error;

@@ -4,12 +4,18 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from src.confidence_estimation import get_confidence_profile
 from src.predict_single_listing import (
     DEFAULT_MODEL_PATH,
     get_clip_runtime,
     get_model_bundle,
     predict_from_dict,
 )
+from src.generate_prediction_explanations import (
+    get_tree_explainer,
+    predict_with_explanations_from_dict,
+)
+from src.similar_listing_retrieval import get_similarity_runtime
 
 
 LOGGER = logging.getLogger("rent_agent_inference_service")
@@ -38,6 +44,18 @@ class InferenceService:
             input_data=input_data,
             model_path=self.model_path,
         )
+
+    def predict_with_explanations(self, input_data: dict[str, Any]) -> dict[str, Any]:
+        return predict_with_explanations_from_dict(
+            input_data=input_data,
+            model_path=self.model_path,
+        )
+
+    def warm_explanations(self) -> None:
+        LOGGER.info("Explainability runtime on yukleme kontrolu baslatiliyor.")
+        _ = get_tree_explainer(self.model_path)
+        _ = get_confidence_profile()
+        _ = get_similarity_runtime()
 
 
 _SERVICE = InferenceService()

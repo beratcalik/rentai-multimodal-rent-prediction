@@ -1,9 +1,9 @@
 "use client";
 
-import type { NumericFieldMetadata } from "@/lib/meta/load-metadata";
-import { cn, formatNumberTr } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { NumericFieldMetadata } from "@/lib/meta/load-metadata";
+import { cn, formatNumberTr } from "@/lib/utils";
 
 type NumericFieldProps = {
   id: string;
@@ -40,7 +40,7 @@ export function NumericField({
 
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id}>
+      <Label htmlFor={id} className="text-[13px] font-medium">
         {label}
         {required ? <span className="ml-1 text-error">*</span> : null}
       </Label>
@@ -55,16 +55,13 @@ export function NumericField({
         placeholder={`Örn. ${formatRounded(metadata.median)}${placeholderUnit}`}
         disabled={disabled}
         aria-invalid={Boolean(errorMessage)}
-        className={cn(errorMessage && "border-error/40 focus-visible:border-error")}
+        className={cn("text-[14px]", errorMessage && "border-error/40 focus-visible:border-error")}
       />
 
-      {errorMessage ? <p className="text-xs text-error">{errorMessage}</p> : null}
-      {!errorMessage ? <p className="text-xs text-muted-foreground">Veri setinde tipik aralık: {typicalRange}</p> : null}
-
+      {errorMessage ? <p className="text-[12px] text-error">{errorMessage}</p> : null}
+      {!errorMessage ? <p className="text-[12px] text-muted-foreground">Tipik aralık: {typicalRange}</p> : null}
       {isOutOfTypicalRange ? (
-        <p className="text-xs text-warning">Bu değer tipik aralığın dışında görünüyor, yine de tahmin üretilebilir.</p>
-      ) : !errorMessage ? (
-        <p className="text-xs text-transparent">.</p>
+        <p className="text-[12px] text-warning">Bu değer tipik aralığın dışında görünüyor, yine de tahmin üretilebilir.</p>
       ) : null}
     </div>
   );

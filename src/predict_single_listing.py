@@ -5,6 +5,7 @@ import json
 import logging
 import sys
 import warnings
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -57,6 +58,36 @@ DEFAULT_BATCH_SIZE = 16
 DEFAULT_PREDICTION_MESSAGE = (
     "Tahmin ilan bilgileri, aciklama metni ve fotograflar birlikte analiz edilerek uretildi."
 )
+
+
+@dataclass
+class ImageEmbeddingArtifacts:
+    embedding: np.ndarray
+    mean_embedding: np.ndarray
+    max_embedding: np.ndarray
+    used_image_count: int
+    warnings: list[str]
+
+
+@dataclass
+class FeatureBlocks:
+    tabular: np.ndarray
+    text_tfidf: Any
+    text_svd: np.ndarray
+    image_reduced: np.ndarray
+    fused: np.ndarray
+
+
+@dataclass
+class PreparedPredictionArtifacts:
+    bundle: dict[str, Any]
+    dataframe: pd.DataFrame
+    image_paths: list[str]
+    cleaned_text: str
+    image_artifacts: ImageEmbeddingArtifacts
+    feature_blocks: FeatureBlocks
+    warnings: list[str]
+    raw_prediction_try: float
 
 
 def configure_logging() -> None:
@@ -190,7 +221,7 @@ def normalize_payload(
     return dataframe, image_paths, inference_warnings
 
 
-def build_image_embedding(
+def build_image_embedding_artifacts(
     image_paths: list[str],
     embedding_dimension: int,
     max_images: int,
@@ -198,10 +229,17 @@ def build_image_embedding(
     device: torch.device,
     clip_model: Any,
     image_preprocess: Any,
-) -> tuple[np.ndarray, int, list[str]]:
+) -> ImageEmbeddingArtifacts:
     inference_warnings: list[str] = []
     if not image_paths:
-        return np.zeros((1, embedding_dimension), dtype=np.float32), 0, inference_warnings
+        zero_half = np.zeros((1, embedding_dimension // 2), dtype=np.float32)
+        return ImageEmbeddingArtifacts(
+            embedding=np.zeros((1, embedding_dimension), dtype=np.float32),
+            mean_embedding=zero_half,
+            max_embedding=zero_half,
+            used_image_count=0,
+            warnings=inference_warnings,
+        )
 
     if len(image_paths) > max_images:
         inference_warnings.append(
@@ -232,7 +270,14 @@ def build_image_embedding(
 
     if used_image_count == 0:
         inference_warnings.append("Hic okunabilir gorsel bulunamadi; image branch zero-vector fallback kullanacak.")
-        return np.zeros((1, embedding_dimension), dtype=np.float32), 0, inference_warnings
+        zero_half = np.zeros((1, embedding_dimension // 2), dtype=np.float32)
+        return ImageEmbeddingArtifacts(
+            embedding=np.zeros((1, embedding_dimension), dtype=np.float32),
+            mean_embedding=zero_half,
+            max_embedding=zero_half,
+            used_image_count=0,
+            warnings=inference_warnings,
+        )
 
     batches: list[np.ndarray] = []
     for start in range(0, len(usable_tensors), max(1, batch_size)):
@@ -262,34 +307,121 @@ def build_image_embedding(
             f"Beklenen image embedding boyutu {embedding_dimension}, hesaplanan boyut {len(meanmax_embedding)}."
         )
 
-    return meanmax_embedding[None, :], used_image_count, inference_warnings
+    return ImageEmbeddingArtifacts(
+        embedding=meanmax_embedding[None, :],
+        mean_embedding=mean_embedding[None, :],
+        max_embedding=max_embedding[None, :],
+        used_image_count=used_image_count,
+        warnings=inference_warnings,
+    )
+
+
+def build_feature_blocks(
+    bundle: dict[str, Any],
+    dataframe: pd.DataFrame,
+    image_embedding: np.ndarray,
+    cleaned_text_series: pd.Series | None = None,
+) -> FeatureBlocks:
+    cleaned_tabular = clean_tabular_features(dataframe)
+    x_tabular = np.asarray(
+        bundle["tabular_preprocessor"].transform(cleaned_tabular),
+        dtype=np.float32,
+    )
+
+    text_series = cleaned_text_series
+    if text_series is None:
+        text_series = build_clean_text_columns(dataframe)["combined_text"]
+
+    x_text_tfidf = bundle["text_vectorizer"].transform(text_series)
+    x_text = np.asarray(
+        bundle["text_svd"].transform(x_text_tfidf),
+        dtype=np.float32,
+    )
+
+    x_image = np.asarray(
+        bundle["image_processor"].transform(image_embedding),
+        dtype=np.float32,
+    )
+
+    x_fused = np.hstack([x_tabular, x_text, x_image]).astype(np.float32, copy=False)
+    return FeatureBlocks(
+        tabular=x_tabular,
+        text_tfidf=x_text_tfidf,
+        text_svd=x_text,
+        image_reduced=x_image,
+        fused=x_fused,
+    )
 
 
 def transform_features(
     bundle: dict[str, Any],
     dataframe: pd.DataFrame,
     image_embedding: np.ndarray,
+    cleaned_text_series: pd.Series | None = None,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    cleaned_tabular = clean_tabular_features(dataframe)
-    X_tabular = np.asarray(
-        bundle["tabular_preprocessor"].transform(cleaned_tabular),
-        dtype=np.float32,
+    feature_blocks = build_feature_blocks(
+        bundle=bundle,
+        dataframe=dataframe,
+        image_embedding=image_embedding,
+        cleaned_text_series=cleaned_text_series,
+    )
+    return (
+        feature_blocks.tabular,
+        feature_blocks.text_svd,
+        feature_blocks.image_reduced,
+        feature_blocks.fused,
     )
 
-    cleaned_text = build_clean_text_columns(dataframe)["combined_text"]
-    X_text_tfidf = bundle["text_vectorizer"].transform(cleaned_text)
-    X_text = np.asarray(
-        bundle["text_svd"].transform(X_text_tfidf),
-        dtype=np.float32,
+
+def prepare_prediction_artifacts(
+    input_data: dict[str, Any],
+    model_path: str | Path | None = None,
+    batch_size: int = DEFAULT_BATCH_SIZE,
+) -> PreparedPredictionArtifacts:
+    if not isinstance(input_data, dict):
+        raise ValueError("prepare_prediction_artifacts bir ilan sozlugu bekler.")
+
+    bundle = get_model_bundle(model_path=model_path)
+    dataframe, image_paths, inference_warnings = normalize_payload(
+        payload=input_data,
+        expected_tabular_columns=list(bundle["tabular_feature_columns"]),
     )
 
-    X_image = np.asarray(
-        bundle["image_processor"].transform(image_embedding),
-        dtype=np.float32,
-    )
+    cleaned_text_series = build_clean_text_columns(dataframe)["combined_text"]
+    cleaned_text = str(cleaned_text_series.iloc[0] or "")
+    if not cleaned_text:
+        inference_warnings.append("Title/description temizleme sonrasi bos kaldi; text branch sparse fallback kullanacak.")
 
-    X_fused = np.hstack([X_tabular, X_text, X_image]).astype(np.float32, copy=False)
-    return X_tabular, X_text, X_image, X_fused
+    device, clip_model, image_preprocess = get_clip_runtime()
+    image_artifacts = build_image_embedding_artifacts(
+        image_paths=image_paths,
+        embedding_dimension=int(bundle["embedding_dimension"]),
+        max_images=min(int(bundle.get("image_cap", MAX_IMAGES_PER_LISTING)), MAX_IMAGES_PER_LISTING),
+        batch_size=max(1, int(batch_size)),
+        device=device,
+        clip_model=clip_model,
+        image_preprocess=image_preprocess,
+    )
+    inference_warnings.extend(image_artifacts.warnings)
+
+    feature_blocks = build_feature_blocks(
+        bundle=bundle,
+        dataframe=dataframe,
+        image_embedding=image_artifacts.embedding,
+        cleaned_text_series=cleaned_text_series,
+    )
+    raw_prediction = float(np.asarray(bundle["regressor"].predict(feature_blocks.fused), dtype=float).ravel()[0])
+
+    return PreparedPredictionArtifacts(
+        bundle=bundle,
+        dataframe=dataframe,
+        image_paths=image_paths,
+        cleaned_text=cleaned_text,
+        image_artifacts=image_artifacts,
+        feature_blocks=feature_blocks,
+        warnings=inference_warnings,
+        raw_prediction_try=raw_prediction,
+    )
 
 
 def format_amount(value: float) -> str:
@@ -302,47 +434,21 @@ def predict_from_dict(
     model_path: str | Path | None = None,
     batch_size: int = DEFAULT_BATCH_SIZE,
 ) -> dict[str, Any]:
-    if not isinstance(input_data, dict):
-        raise ValueError("predict_from_dict bir ilan sozlugu bekler.")
-
-    bundle = get_model_bundle(model_path=model_path)
-    dataframe, image_paths, inference_warnings = normalize_payload(
-        payload=input_data,
-        expected_tabular_columns=list(bundle["tabular_feature_columns"]),
+    artifacts = prepare_prediction_artifacts(
+        input_data=input_data,
+        model_path=model_path,
+        batch_size=batch_size,
     )
-
-    cleaned_text = build_clean_text_columns(dataframe)["combined_text"].iloc[0]
-    if not cleaned_text:
-        inference_warnings.append("Title/description temizleme sonrasi bos kaldi; text branch sparse fallback kullanacak.")
-
-    device, clip_model, image_preprocess = get_clip_runtime()
-    image_embedding, used_image_count, image_warnings = build_image_embedding(
-        image_paths=image_paths,
-        embedding_dimension=int(bundle["embedding_dimension"]),
-        max_images=min(int(bundle.get("image_cap", MAX_IMAGES_PER_LISTING)), MAX_IMAGES_PER_LISTING),
-        batch_size=max(1, int(batch_size)),
-        device=device,
-        clip_model=clip_model,
-        image_preprocess=image_preprocess,
-    )
-    inference_warnings.extend(image_warnings)
-
-    _, _, _, X_fused = transform_features(
-        bundle=bundle,
-        dataframe=dataframe,
-        image_embedding=image_embedding,
-    )
-    raw_prediction = float(np.asarray(bundle["regressor"].predict(X_fused), dtype=float).ravel()[0])
-    rounded_prediction = int(round(raw_prediction))
+    rounded_prediction = int(round(artifacts.raw_prediction_try))
 
     return {
         "predicted_rent_try": rounded_prediction,
-        "predicted_rent_formatted": f"{format_amount(raw_prediction)} TL",
-        "used_image_count": used_image_count,
-        "model_name": str(bundle["model_name"]),
-        "warnings": inference_warnings,
+        "predicted_rent_formatted": f"{format_amount(artifacts.raw_prediction_try)} TL",
+        "used_image_count": artifacts.image_artifacts.used_image_count,
+        "model_name": str(artifacts.bundle["model_name"]),
+        "warnings": list(artifacts.warnings),
         "message": DEFAULT_PREDICTION_MESSAGE,
-        "raw_prediction_try": raw_prediction,
+        "raw_prediction_try": artifacts.raw_prediction_try,
     }
 
 

@@ -7,7 +7,7 @@ import { Providers } from "@/components/providers/Providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Rent Agent | Ankara Kira Tahmini",
+  title: "RentAI | Ankara Kira Tahmini",
   description:
     "Ankara'daki kiralık konutlar için konum, konut özellikleri, ilan açıklaması ve fotoğrafları birlikte değerlendiren kira tahmin arayüzü.",
 };

@@ -10,7 +10,12 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.inference_service import get_inference_service
-from backend.schemas import HealthResponse, PredictResponse, RootResponse
+from backend.schemas import (
+    HealthResponse,
+    PredictResponse,
+    PredictWithExplanationsResponse,
+    RootResponse,
+)
 
 
 LOGGER = logging.getLogger("rent_agent_api")
@@ -43,7 +48,7 @@ ensure_upload_directories()
 
 app = FastAPI(
     title="Rent Agent API",
-    version="0.1.0",
+    version="0.2.0",
     description="Production-like FastAPI surface for the final Rent Agent multimodal inference model.",
 )
 
@@ -71,7 +76,7 @@ def cleanup_temp_dir(temp_dir: Path | None) -> None:
     try:
         shutil.rmtree(temp_dir, ignore_errors=True)
     except Exception:
-        LOGGER.warning("Temp klasoru temizlenemedi: %s", temp_dir, exc_info=True)
+        LOGGER.warning("Temp klasörü temizlenemedi: %s", temp_dir, exc_info=True)
 
 
 async def persist_uploaded_images(images: list[UploadFile] | None) -> tuple[list[str], int, list[str], Path | None]:
@@ -86,7 +91,7 @@ async def persist_uploaded_images(images: list[UploadFile] | None) -> tuple[list
 
     if total_uploaded_count > MAX_IMAGE_COUNT:
         warnings.append(
-            f"{total_uploaded_count} gorsel gonderildi; ilk {MAX_IMAGE_COUNT} dosya kullanildi, kalanlar ignore edildi."
+            f"{total_uploaded_count} görsel gönderildi; ilk {MAX_IMAGE_COUNT} dosya kullanıldı, kalanlar yok sayıldı."
         )
 
     try:
@@ -96,20 +101,20 @@ async def persist_uploaded_images(images: list[UploadFile] | None) -> tuple[list
             if suffix not in ALLOWED_IMAGE_SUFFIXES:
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Gecersiz dosya turu: {original_name or 'isimsiz dosya'}. Yalnizca jpg, jpeg ve png kabul edilir.",
+                    detail=f"Geçersiz dosya türü: {original_name or 'isimsiz dosya'}. Yalnızca jpg, jpeg ve png kabul edilir.",
                 )
 
             if uploaded_image.content_type not in ALLOWED_CONTENT_TYPES:
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Desteklenmeyen content-type: {uploaded_image.content_type}. Yalnizca JPEG ve PNG kabul edilir.",
+                    detail=f"Desteklenmeyen içerik türü: {uploaded_image.content_type}. Yalnızca JPEG ve PNG kabul edilir.",
                 )
 
             file_bytes = await uploaded_image.read()
             if len(file_bytes) > MAX_IMAGE_SIZE_BYTES:
                 raise HTTPException(
                     status_code=400,
-                    detail=f"{original_name or 'Gorsel'} 10MB limitini asiyor.",
+                    detail=f"{original_name or 'Görsel'} 10 MB sınırını aşıyor.",
                 )
 
             safe_path = request_dir / f"image_{index:02d}_{uuid4().hex}{suffix}"
@@ -171,6 +176,52 @@ def build_prediction_payload(
         "description": description,
         "image_paths": image_paths,
     }
+
+
+def build_predict_response(prediction_result: dict[str, object], merged_warnings: list[str]) -> PredictResponse:
+    return PredictResponse(
+        predicted_rent_try=int(prediction_result["predicted_rent_try"]),
+        predicted_rent_formatted=str(prediction_result["predicted_rent_formatted"]),
+        used_image_count=int(prediction_result["used_image_count"]),
+        model_name=str(prediction_result["model_name"]),
+        warnings=merged_warnings,
+        message=API_MESSAGE,
+    )
+
+
+def build_predict_with_explanations_response(
+    prediction_result: dict[str, object],
+    merged_warnings: list[str],
+) -> PredictWithExplanationsResponse:
+    return PredictWithExplanationsResponse(
+        predicted_rent_try=int(prediction_result["predicted_rent_try"]),
+        predicted_rent_formatted=str(prediction_result["predicted_rent_formatted"]),
+        used_image_count=int(prediction_result["used_image_count"]),
+        model_name=str(prediction_result["model_name"]),
+        warnings=merged_warnings,
+        message=API_MESSAGE,
+        confidence_score=int(prediction_result["confidence_score"]),
+        confidence_label=str(prediction_result["confidence_label"]),
+        confidence_reasons=[str(item) for item in prediction_result.get("confidence_reasons", [])],
+        top_positive_factors=[str(item) for item in prediction_result.get("top_positive_factors", [])],
+        top_negative_factors=[str(item) for item in prediction_result.get("top_negative_factors", [])],
+        similar_listings=[
+            {
+                "district": str(item.get("district", "")),
+                "neighborhood": str(item.get("neighborhood", "")),
+                "rooms": str(item.get("rooms", "")),
+                "m2_gross": item.get("m2_gross"),
+                "building_age": item.get("building_age"),
+                "floor": item.get("floor"),
+                "price_try": int(item.get("price_try", 0)),
+                "price_formatted": str(item.get("price_formatted", "")),
+                "similarity_score": int(item.get("similarity_score", 0)),
+                "similarity_reasons": [str(reason) for reason in item.get("similarity_reasons", [])],
+            }
+            for item in prediction_result.get("similar_listings", [])
+            if isinstance(item, dict)
+        ],
+    )
 
 
 @app.get("/", response_model=RootResponse)
@@ -239,22 +290,78 @@ async def predict(
 
         prediction_result = service.predict(prediction_payload)
         merged_warnings = request_warnings + list(prediction_result.get("warnings", []))
-
-        return PredictResponse(
-            predicted_rent_try=int(prediction_result["predicted_rent_try"]),
-            predicted_rent_formatted=str(prediction_result["predicted_rent_formatted"]),
-            used_image_count=int(prediction_result["used_image_count"]),
-            model_name=str(prediction_result["model_name"]),
-            warnings=merged_warnings,
-            message=API_MESSAGE,
-        )
+        return build_predict_response(prediction_result, merged_warnings)
     except HTTPException:
         raise
     except Exception:
-        LOGGER.exception("Tahmin istegi islenirken beklenmeyen hata olustu.")
+        LOGGER.exception("Tahmin isteği işlenirken beklenmeyen hata oluştu.")
         raise HTTPException(
             status_code=500,
-            detail="Tahmin uretilemedi. Lutfen girdileri kontrol edip tekrar deneyin.",
+            detail="Tahmin üretilemedi. Lütfen girdileri kontrol edip tekrar deneyin.",
+        )
+    finally:
+        cleanup_temp_dir(temp_dir)
+
+
+@app.post("/predict-with-explanations", response_model=PredictWithExplanationsResponse)
+async def predict_with_explanations(
+    city: Annotated[str | None, Form()] = None,
+    district: Annotated[str | None, Form()] = None,
+    neighborhood: Annotated[str | None, Form()] = None,
+    rooms: Annotated[str | None, Form()] = None,
+    bathrooms: Annotated[str | None, Form()] = None,
+    m2_gross: Annotated[str | None, Form()] = None,
+    building_age: Annotated[str | None, Form()] = None,
+    floor: Annotated[str | None, Form()] = None,
+    total_floors: Annotated[str | None, Form()] = None,
+    heating_type: Annotated[str | None, Form()] = None,
+    fuel_type: Annotated[str | None, Form()] = None,
+    is_furnished: Annotated[str | None, Form()] = None,
+    dues_try: Annotated[str | None, Form()] = None,
+    home_type: Annotated[str | None, Form()] = None,
+    home_shape: Annotated[str | None, Form()] = None,
+    title: Annotated[str | None, Form()] = None,
+    description: Annotated[str | None, Form()] = None,
+    images: Annotated[list[UploadFile] | None, File()] = None,
+) -> PredictWithExplanationsResponse:
+    service = get_inference_service()
+    temp_dir: Path | None = None
+
+    try:
+        saved_image_paths, raw_image_count, request_warnings, temp_dir = await persist_uploaded_images(images)
+        prediction_payload = build_prediction_payload(
+            city=city,
+            district=district,
+            neighborhood=neighborhood,
+            rooms=rooms,
+            bathrooms=bathrooms,
+            m2_gross=m2_gross,
+            building_age=building_age,
+            floor=floor,
+            total_floors=total_floors,
+            heating_type=heating_type,
+            fuel_type=fuel_type,
+            is_furnished=is_furnished,
+            dues_try=dues_try,
+            home_type=home_type,
+            home_shape=home_shape,
+            title=title,
+            description=description,
+            image_paths=saved_image_paths,
+            image_count=raw_image_count,
+            valid_image_count=len(saved_image_paths),
+        )
+
+        prediction_result = service.predict_with_explanations(prediction_payload)
+        merged_warnings = request_warnings + list(prediction_result.get("warnings", []))
+        return build_predict_with_explanations_response(prediction_result, merged_warnings)
+    except HTTPException:
+        raise
+    except Exception:
+        LOGGER.exception("Explainable tahmin isteği işlenirken beklenmeyen hata oluştu.")
+        raise HTTPException(
+            status_code=500,
+            detail="Tahmin ve açıklamalar üretilemedi. Lütfen girdileri kontrol edip tekrar deneyin.",
         )
     finally:
         cleanup_temp_dir(temp_dir)

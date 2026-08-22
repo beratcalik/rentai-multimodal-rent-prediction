@@ -8,7 +8,9 @@ import {
   MapPinned,
   MessageSquareText,
   ScanSearch,
+  Sparkles,
   type LucideIcon,
+  UploadCloud,
 } from "lucide-react";
 
 export const NAV_LINKS = [
@@ -29,12 +31,17 @@ export const HOME_STEPS: Array<{
   },
   {
     title: "Özellikleri gir",
-    description: "Konut bilgilerini ve ilan metnini ekleyin.",
+    description: "Oda tipi, m² ve kat bilgilerini ekleyin.",
     icon: Building2,
   },
   {
+    title: "Konut fotoğraflarını yükle",
+    description: "En iyi fotoğrafları sisteme ekleyin.",
+    icon: UploadCloud,
+  },
+  {
     title: "Tahmini gör",
-    description: "Beklenen kira aralığını aynı ekranda alın.",
+    description: "Beklenen kira aralığını anında alın.",
     icon: BarChart3,
   },
 ] as const;
@@ -74,8 +81,8 @@ export const PREDICTION_STEPS: Array<{
 }> = [
   { id: "location", title: "Konum", icon: MapPinned },
   { id: "features", title: "Özellikler", icon: Building2 },
-  { id: "description", title: "Açıklama", icon: FileText },
   { id: "photos", title: "Fotoğraflar", icon: Camera },
+  { id: "description", title: "Açıklama", icon: FileText },
   { id: "prediction", title: "Tahmin", icon: BarChart3 },
 ] as const;
 
@@ -97,7 +104,7 @@ export const METHODOLOGY_STEPS: Array<{
   {
     title: "Kira tahmini üretilir",
     description: "Tüm veriler birlikte değerlendirilerek beklenen kira aralığı oluşturulur.",
-    icon: BarChart3,
+    icon: Sparkles,
   },
 ] as const;
 
@@ -166,7 +173,7 @@ export const METHODOLOGY_TECHNICAL_NOTES: Array<{
   },
   {
     title: "Ablation notları",
-    summary: "Metin ve görsel dalların katkısı, kapatıldıklarında ölçülen hata artışıyla izlendi.",
+    summary: "Metin ve görsel dallarının katkısı, kapatıldıklarında ölçülen hata artışıyla izlendi.",
     details: [
       "Text kapatılınca MAE: 4.482,72 TL",
       "Image kapatılınca MAE: 5.494,53 TL",
@@ -201,5 +208,6 @@ export const MODEL_COMPARISON = [
 export const PREDICT_LOADING_STEPS = [
   "İlan bilgileri hazırlanıyor",
   "Fotoğraflar analiz ediliyor",
+  "Benzer piyasa örnekleri aranıyor",
   "Kira tahmini oluşturuluyor",
 ] as const;
