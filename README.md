@@ -17,6 +17,9 @@ From raw data acquisition to cleaning, multimodal feature engineering, model tra
 - XGBoost regression as the final estimator
 - FastAPI inference API with multi-image upload support
 - Next.js frontend for interactive predictions
+- Explainable predictions with key positive/negative factors and modal ablations
+- Evidence-based confidence indicator with user-facing reasons
+- Similar-listing retrieval for market-context comparison
 - Experiment, dataset-quality, and error-analysis reports kept in the repository
 
 ## Dataset — Built From Scratch
@@ -137,6 +140,8 @@ backend/       FastAPI application and inference service
 frontend/      Next.js prediction interface
 src/           preprocessing, training, embedding and inference code
 reports/       dataset audits, experiment results and model analysis
+docs/          project documentation
+models/        required final inference model bundle
 examples/      example listing payloads
 data/          project data helpers / local data structure
 ```
@@ -160,13 +165,13 @@ pip install -r requirements.txt
 
 ### 2. Model artifact
 
-The inference pipeline expects the trained model bundle at:
+The repository includes the final trained model bundle required by the inference API:
 
 ```text
 models/final_multimodal_text_clip_model.joblib
 ```
 
-Large datasets, listing images, and trained model artifacts are intentionally not committed to the repository. The preprocessing, training, embedding, validation, and inference pipelines under `src/` and the reports under `reports/` document how the final system was produced.
+Large datasets and listing images are intentionally not committed to the repository. The preprocessing, training, embedding, validation, and inference pipelines under `src/` and the reports under `reports/` document how the final system was produced.
 
 ### 3. Run the API
 
@@ -216,8 +221,20 @@ The `reports/` directory includes reproducible summaries for:
 - district and price-range analysis
 - error analysis
 - FastAPI integration
+- prediction explanations, confidence scoring, and similar-listing retrieval
 
 The main final evaluation is documented in `reports/final_multimodal_text_clip_results.md`, while dataset construction and audit statistics are documented in `reports/dataset_summary.md`.
+
+## Product Features
+
+The prediction workspace accepts structured listing details, description text, and up to 16 property photos. It returns:
+
+- predicted monthly rent and an estimated range
+- influential positive and negative factors
+- an interpretable confidence score based on data completeness, image coverage, location representation, price distribution, and modal stability
+- structurally similar historical listings with the reasons they match
+
+The explainable response is available through `POST /predict-with-explanations`; the original `POST /predict` endpoint remains available for a simpler prediction response.
 
 ## Purpose
 
