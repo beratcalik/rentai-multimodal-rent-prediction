@@ -6,6 +6,16 @@ A major part of the project was the dataset itself: **I built the dataset from s
 
 From raw data acquisition to cleaning, multimodal feature engineering, model training, evaluation, inference, API development, and frontend integration, the full pipeline was built as part of this project.
 
+## Application Interface
+
+RentAI provides a guided interface for entering property details, optional photos, and listing text before generating a prediction.
+
+![RentAI home page](docs/screenshots/rentai-home.png)
+
+The prediction workspace keeps the model inputs visible, guides the user through each required group, and activates neighbourhood choices after a district is selected.
+
+![RentAI prediction workspace](docs/screenshots/rentai-prediction-workspace.png)
+
 ## Highlights
 
 - **Original dataset collected from scratch** with a custom scraping/crawling workflow
